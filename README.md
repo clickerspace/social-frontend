@@ -1,4 +1,4 @@
-# Nuxt MiniApp Project
+# Nuxt MiniApp Project USE AS A TEMPLATE ONLY
 
 This project is a Nuxt mini-app using `pnpm` as the package manager. It includes proxy settings for API requests and support for an HTTPS environment. Follow these steps to get started.
 
