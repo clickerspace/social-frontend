@@ -1,0 +1,169 @@
+import { defineStore } from "pinia";
+
+import { retrieveLaunchParams } from "@telegram-apps/sdk";
+
+export interface User {
+  name: string;
+  token: string | null;
+  expire: string | null;
+  telegramId: string;
+  userId: string;
+  gameId: string;
+  updateTime: number;
+  withdrawableTokens: number;
+  dayEnd: number;
+  language: string;
+  loading: boolean;
+  version: string;
+  connected: boolean;
+  walletAddress: string;
+  //fx settings
+  musicLevel: number;
+  musicOn: boolean;
+  soundFxLevel: number;
+
+  soundFxOn: boolean;
+  vibration: boolean;
+  // fx settings end
+}
+
+export const userStore = defineStore("userStore", {
+  state: (): User => {
+    return {
+      name: "John Doe",
+      token: null,
+      expire: null,
+
+      telegramId: "",
+
+      userId: "",
+      gameId: "",
+      updateTime: 0,
+
+      withdrawableTokens: 0,
+      dayEnd: 0,
+
+      language: "check",
+
+      loading: true,
+
+      version: "0.0.0",
+
+      connected: false,
+
+      walletAddress: "",
+      //fx settings
+      musicLevel: 50,
+      musicOn: true,
+      soundFxLevel: 50,
+      soundFxOn: true,
+      vibration: true,
+
+      // fx settings end
+    };
+  },
+  actions: {
+    async login() {
+      try {
+        const { initDataRaw } = retrieveLaunchParams();
+        const response = await fetch(`backend/auth/telegram`, {
+          body: JSON.stringify(initDataRaw),
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const data = await response.json();
+        this.token = data.session;
+        this.expire = data.expire;
+
+        return true;
+      } catch (error) {
+        console.error("Login failed:", error);
+        return false;
+      }
+    },
+    setDayEnd(time: number) {
+      this.dayEnd = time;
+    },
+
+    assignUserData(res: any) {
+      const gameUser = res?.gameUser || res?.updatedUser;
+
+      this.userId = gameUser?.user_id;
+      this.name = gameUser?.name;
+      this.telegramId = gameUser?.email?.split("@")[0];
+      // THOSE INDEX MAY CHANGE IF ERROR CHECK
+      this.withdrawableTokens = gameUser?.withdrawable_tokens?.toFixed(2) || 0;
+      this.updateTime = Date.now();
+      this.gameId = gameUser._id;
+
+      //   this.errorState = "false";
+    },
+
+    setConnected(bool: boolean) {
+      this.connected = bool;
+    },
+
+    setWalletAddress(str: string) {
+      this.walletAddress = str;
+    },
+
+    setVersion(value: string | null | undefined) {
+      if (value) this.version = value;
+    },
+    checkExpire(): "expired" | "valid" {
+      if (!this.expire) {
+        return "expired";
+      }
+      if (new Date() > new Date(this.expire)) {
+        this.token = "";
+        this.expire = "";
+        return "expired";
+      }
+      return "valid";
+    },
+    setToken(token: string) {
+      this.token = token;
+    },
+    setLoading(value: boolean) {
+      this.loading = value;
+    },
+    setLanguage(lang: string) {
+      this.language = lang;
+    },
+
+    clearUser(error: "error" | "restarting" | "false" = "false") {
+      this.token = null;
+      this.expire = null;
+      this.userId = "";
+      this.gameId = "";
+      this.updateTime = 0;
+      this.loading = true;
+    },
+
+    setMusicLevel(value: number) {
+      this.musicLevel = value;
+    },
+    setMusicOn(value: boolean) {
+      this.musicOn = value;
+    },
+    setSoundFxLevel(value: number) {
+      this.soundFxLevel = value;
+    },
+    setSoundFxOn(value: boolean) {
+      this.soundFxOn = value;
+    },
+    setVibration(value: boolean) {
+      this.vibration = value;
+    },
+  },
+
+  persist: {
+    storage: localStorage,
+  },
+});

@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "gruntfuggly.todo-tree",
+    "richie5um2.vscode-sort-json"
+  ],
+  "unwantedRecommendations": ["ms-dotnettools.csharp"]
+}
