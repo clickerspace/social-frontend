@@ -7,5 +7,5 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>friends</div>
+  <div><WalletConnectButton /></div>
 </template>
