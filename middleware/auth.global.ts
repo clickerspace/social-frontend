@@ -45,13 +45,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
   setLoading(true);
 
   // remove this will be updated in login
-  setTimeout(() => {
-    setLoading(false);
-  }, 500);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 500);
 
   // on every page load, set the seasonType to main since we are one page app
   // enable later
-  //   nextTick(async () => {
-  //     await handleLogin(user);
-  //   });
+  nextTick(async () => {
+    await handleLogin(user);
+  });
 });

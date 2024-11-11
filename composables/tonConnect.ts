@@ -16,7 +16,7 @@ export function useTonConnect() {
 
     tonconnect.value.uiOptions = {
       actionsConfiguration: {
-        twaReturnUrl: "https://t.me/clicker_farm_bot/game",
+        twaReturnUrl: "https://t.me/batitestbot/testapp",
       },
     };
     tonconnect.value?.onStatusChange(() => {
