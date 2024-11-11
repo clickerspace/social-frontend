@@ -4,3 +4,9 @@ declare global {
     Telegram?: any;
   }
 }
+interface TabsProvider {
+  tabNumber: Ref<number>;
+  updateTabNumber: (newTabNumber: number) => void;
+}
+
+export type { TabsProvider };

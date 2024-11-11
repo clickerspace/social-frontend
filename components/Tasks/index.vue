@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const emit = defineEmits(["mounted"]);
+onMounted(() => {
+  nextTick(() => {
+    emit("mounted");
+  });
+});
+</script>
 <template>
-  <div>page</div>
+  <div>tasks</div>
 </template>
