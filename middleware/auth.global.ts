@@ -12,7 +12,7 @@ const handleLogin = async (user: any) => {
 
     // const result = await retry(() => user.login(), 3, 1000);
     const result = true;
-    await new Promise((resolve) => setTimeout(resolve, 500));
+
     if (result) {
       //   const me = await retry(() => user.me(), 3, 1000); // add me function to fit this app
       const me = true;

@@ -66,7 +66,7 @@ export const userStore = defineStore("userStore", {
     async login() {
       try {
         const { initDataRaw } = retrieveLaunchParams();
-        const response = await fetch(`/backend/telegram-login`, {
+        const response = await fetch(`/backend/social/telegram-login`, {
           body: JSON.stringify(initDataRaw),
           method: "POST",
           headers: { "Content-Type": "application/json" },
