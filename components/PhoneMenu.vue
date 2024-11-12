@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { TabMenuItems } from "~/utils/constants/tabMenu";
+import { PhoneMenuItems } from "~/utils/constants/phoneMainMenu";
 
 const emit = defineEmits(["activeIndex", "update:isOpen"]);
 </script>
@@ -7,7 +8,24 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
   <div
     class="flex h-full w-full select-none flex-col items-center justify-between overflow-hidden"
   >
-    <span>menu</span>
+    <div class="flex w-full flex-wrap justify-start gap-5 p-7">
+      <NuxtLink
+        v-for="(item, i) in PhoneMenuItems"
+        :key="item.label"
+        :to="item.to"
+        @click="
+          !item.to ? emit('activeIndex', { label: item.label, index: i }) : ''
+        "
+        class="flex cursor-pointer flex-col items-center"
+      >
+        <img :src="item.icon" :alt="item.label" class="size-[44px]" />
+        <span class="line-clamp-1 text-[10px] capitalize">
+          {{
+            item.label.length > 6 ? item.label.slice(0, 6) + "..." : item.label
+          }}
+        </span>
+      </NuxtLink>
+    </div>
     <div>
       <div
         class="flex items-center gap-5 rounded-[24px] bg-[#f5f5f530] px-4 py-2 backdrop-blur-xl dark:bg-[#f5f5f530]"

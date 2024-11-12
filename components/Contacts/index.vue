@@ -1,11 +1,8 @@
 <script setup lang="ts">
-const emit = defineEmits(["mounted"]);
-onMounted(() => {
-  nextTick(() => {
-    emit("mounted");
-  });
-});
+const emit = defineEmits(["update:key"]);
 </script>
 <template>
-  <div>conta</div>
+  <PhoneLayout title="Contacts" @update:key="emit('update:key')"
+    >contact</PhoneLayout
+  >
 </template>

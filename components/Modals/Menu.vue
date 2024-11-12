@@ -7,6 +7,10 @@ type ComponentMap = {
   settings: Component | string;
   requests: Component | string;
   menu: Component | string;
+  wallet: Component | string;
+  maps: Component | string;
+  market: Component | string;
+  clock: Component | string;
 };
 const comps = shallowRef<ComponentMap>({
   contacts: defineAsyncComponentWithRetry(
@@ -24,6 +28,16 @@ const comps = shallowRef<ComponentMap>({
   menu: defineAsyncComponentWithRetry(
     () => import("~/components/PhoneMenu.vue"),
   ),
+  wallet: defineAsyncComponentWithRetry(
+    () => import("~/components/Wallet/index.vue"),
+  ),
+  maps: defineAsyncComponentWithRetry(
+    () => import("~/components/Maps/index.vue"),
+  ),
+  market: defineAsyncComponentWithRetry(
+    () => import("~/components/Market/index.vue"),
+  ),
+  clock: defineAsyncComponentWithRetry(() => import("~/components/Clock.vue")),
 });
 const calculateAndApplyScale = () => {
   const width = window.innerWidth;
