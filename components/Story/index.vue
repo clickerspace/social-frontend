@@ -18,11 +18,29 @@ const applySelectionAndContinueStory = async (selection: string) => {
       options: ["Option 1", "Option 2"],
       next: "This is the next story",
     };
+    showNext.value = false;
+    showOptions.value = false;
+    nextIndex.value = 0;
+
     return;
   }
-  story.value = await userStore().continueStory(story.value, selection);
+  story.value = await userStore().continueStory(
+    story.value.brief,
+    story.value.next,
+    selection,
+  );
+  showOptions.value = false;
+  showNext.value = false;
   console.log(story.value);
 };
+const showNext = ref(false);
+const showOptions = ref(false);
+const nextIndex = ref(0);
+const moveToNextAndShowOptions = async (value: boolean) => {
+  showNext.value = value;
+  showOptions.value = value;
+};
+
 onMounted(async () => {
   if (DISABLED_BACKEND) {
     return;
@@ -40,9 +58,9 @@ onMounted(async () => {
     >
       <h1 class="font-bold text-white dark:text-white">{{ story?.key }}</h1>
       <p class="overflow-y-auto">
-        {{ story?.next || story?.brief }}
+        {{ showNext ? story?.next : story?.brief }}
       </p>
-      <div v-for="options in story?.options">
+      <div v-if="showOptions" v-for="options in story?.options">
         <button
           class="flex w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
           @click="applySelectionAndContinueStory(options)"
@@ -59,14 +77,16 @@ onMounted(async () => {
               ? 'border-[#999999] text-[#999999]'
               : 'border-white text-white dark:border-white dark:text-white'
           "
+          @click="moveToNextAndShowOptions(false)"
         >
           <UIcon name="material-symbols:arrow-back-ios" size="20" />
           <span>BACK</span>
         </button>
         <button
           class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
+          @click="moveToNextAndShowOptions(true)"
         >
-          <span class="">NEXT</span>
+          <span>NEXT</span>
           <UIcon name="material-symbols:arrow-forward-ios" size="20" />
         </button>
       </div>

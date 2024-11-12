@@ -60,7 +60,7 @@ export default defineNuxtConfig({
       RETURN_URL: process.env.NUXT_PUBLIC_RETURN_URL,
       NUXT_MODE: process.env.NUXT_PUBLIC_MODE,
       PUBLIC_URL: process.env.NUXT_PUBLIC_URL,
-      DISABLE_BACKEND: process.env.NUXT_PUBLIC_DISABLE_BACKEND,
+      DISABLED_BACKEND: process.env.NUXT_PUBLIC_DISABLE_BACKEND,
       API_URL: process.env.NUXT_PUBLIC_API_URL,
     },
   },

@@ -104,12 +104,20 @@ export const userStore = defineStore("userStore", {
         return false;
       }
     },
-    async continueStory(initialBrief: string, userChoice: string) {
+    async continueStory(
+      initialBrief: string,
+      initialNext: string,
+      userChoice: string,
+    ) {
       try {
         const response = await cFetch(`/backend/continue-story`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ initialBrief, userChoice }),
+          body: JSON.stringify({
+            initialBrief,
+            initialNext: initialNext,
+            userChoice,
+          }),
         });
 
         if (!response.ok) {
