@@ -1,11 +1,83 @@
 <script setup lang="ts">
+import { defineAsyncComponentWithRetry } from "~/utils/helpers/defineAsyncComponentWithRetry";
+
+type ComponentMap = {
+  contacts: Component | string;
+  tasks: Component | string;
+  settings: Component | string;
+  requests: Component | string;
+  menu: Component | string;
+};
+const comps = shallowRef<ComponentMap>({
+  contacts: defineAsyncComponentWithRetry(
+    () => import("~/components/Contacts/index.vue"),
+  ),
+  tasks: defineAsyncComponentWithRetry(
+    () => import("~/components/Tasks/index.vue"),
+  ),
+  settings: defineAsyncComponentWithRetry(
+    () => import("~/components/Settings/index.vue"),
+  ),
+  requests: defineAsyncComponentWithRetry(
+    () => import("~/components/Requests/index.vue"),
+  ),
+  menu: defineAsyncComponentWithRetry(
+    () => import("~/components/PhoneMenu.vue"),
+  ),
+});
+const calculateAndApplyScale = () => {
+  const width = window.innerWidth;
+  let scaleFactor;
+  const targetDivRef = window.document.querySelector(
+    ".targetlist-scale",
+  ) as HTMLElement | null;
+
+  if (width < 410) {
+    scaleFactor = width / 410;
+  } else if (width <= 820) {
+    // Example: Scale linearly between 410px and 820px widths
+    scaleFactor = 1 + ((width - 410) / (820 - 410)) * (1.5 - 1); // Scales up to 1.5x between 410px and 820px
+  } else {
+    scaleFactor = 1.5; // Maximum scale factor
+  }
+
+  if (targetDivRef) {
+    targetDivRef.style.transform = `scale(${scaleFactor})`;
+    targetDivRef.style.transformOrigin = "bottom left";
+    targetDivRef.style.width = `${100 / scaleFactor}%`;
+
+    // Adjust the height similarly if needed
+  }
+};
+onMounted(() => {
+  calculateAndApplyScale();
+  window.addEventListener("resize", calculateAndApplyScale);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", calculateAndApplyScale);
+});
+
+const activeKey = ref<keyof ComponentMap>("menu");
+const activeIndex = ref<number>(0);
+const activeCompIndex = (key: keyof ComponentMap, i: number) => {
+  activeKey.value = key;
+  activeIndex.value = i;
+};
 const isOpen = defineModel<boolean>("isOpen");
+const closeModal = () => {
+  isOpen.value = false;
+  setTimeout(() => {
+    activeKey.value = "menu";
+  }, 500);
+};
 const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
 </script>
 <template>
   <UModal
     v-model="isOpen"
     fullscreen
+    @close="closeModal"
     :ui="{
       background: '!bg-opacity-0',
       inner: 'hide-scrollbar',
@@ -32,12 +104,6 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
       },
     }"
   >
-    <div class="flex w-full justify-center py-3">
-      <button
-        class="flex h-2 w-48 items-center justify-center gap-2 rounded-[10px] bg-[#99999950] backdrop-blur-sm"
-        @click="isOpen = false"
-      ></button>
-    </div>
     <div
       class="relative h-full w-full rounded-t-[42px] border-x-[10px] border-t-[10px] border-black shadow-xl"
     >
@@ -57,8 +123,29 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
         class="hide-scrollbar relative h-full w-full overflow-y-scroll rounded-t-[32px] bg-cover bg-center bg-no-repeat pt-6"
         :class="bg"
       >
-        <TabMenu />
+        <Transition>
+          <component
+            :is="comps[activeKey as keyof ComponentMap]"
+            @update:is-open="() => closeModal()"
+            @active-index="
+              (e: any) => {
+                activeCompIndex(e.label, e.i);
+              }
+            "
+          />
+        </Transition>
       </div>
     </div>
   </UModal>
 </template>
+<style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>
