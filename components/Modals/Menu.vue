@@ -130,6 +130,11 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
           <component
             :is="comps[activeKey as keyof ComponentMap]"
             @update:is-open="() => closeModal()"
+            @update:key="
+              () => {
+                activeKey = 'menu';
+              }
+            "
             @active-index="
               (e: any) => {
                 activeCompIndex(e.label, e.i);

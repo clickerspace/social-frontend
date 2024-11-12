@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:isOpen"]);
+const emit = defineEmits(["update:key"]);
 
 const credistModal = ref(false);
 const startCredits = () => {
@@ -20,7 +20,7 @@ const startCredits = () => {
       class="absolute bottom-2 left-1/2 flex w-full -translate-x-1/2 justify-center py-3"
       @click="
         () => {
-          emit('update:isOpen');
+          emit('update:key');
         }
       "
     >
