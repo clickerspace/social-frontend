@@ -8,6 +8,7 @@ export default <Partial<Config>>{
       luckiestGuy: ["Luckiest Guy"],
       roboto: ["Roboto"],
       londrina: ["Londrina Solid"],
+      inter: ["Inter"],
     },
     extend: {
       colors: {
@@ -43,6 +44,7 @@ export default <Partial<Config>>{
         "social-blue": {
           "100": "#024B76",
           "200": "#002544",
+          "300": "#31456F",
         },
       },
       screens: {

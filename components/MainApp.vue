@@ -49,7 +49,8 @@ onBeforeMount(() => {
     ></div>
     <div class="mobile-body relative flex w-full flex-col overflow-hidden">
       <ClientOnly>
-        <StatusBar />
+        <StatusBar class="absolute" />
+        <Story />
       </ClientOnly>
     </div>
   </div>

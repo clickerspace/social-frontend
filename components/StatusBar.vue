@@ -26,10 +26,12 @@ const energy = ref(15);
           <div
             class="absolute left-0 flex size-8 items-center justify-center rounded-full border border-social-blue-200 bg-social-yellow-100"
           >
-            <span class="text-sm text-social-blue-200">$</span>
+            <span class="font-semibold text-social-blue-200">$</span>
           </div>
         </div>
-        <span class="px-[1px] text-sm text-social-blue-200"> + </span>
+        <span class="px-[1px] text-sm font-semibold text-social-blue-200"
+          >+</span
+        >
       </div>
       <UChip
         :show="energy > 10"
