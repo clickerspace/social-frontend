@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { modalStore } from "~/store/modalStore";
+import { storeToRefs } from "#build/imports";
+
+const { isModalOpen } = storeToRefs(modalStore());
 const sp = ref(-65485);
-const energy = ref(15);
-const isOpen = ref(false);
+const energy = ref(12);
 </script>
 <template>
   <div class="flex h-12 w-full items-center justify-between px-5">
-    <ModalsMenu v-model:isOpen="isOpen" />
+    <ModalsMenu v-model:isOpen="isModalOpen" />
     <div
       class="flex cursor-pointer items-center justify-center rounded-lg bg-social-yellow-100 p-1"
-      @click="isOpen = true"
+      @click="modalStore().openMenuModal('menu')"
     >
       <UIcon
         name="hugeicons:smart-phone-01"
@@ -46,7 +49,8 @@ const isOpen = ref(false);
         }"
       >
         <div
-          class="flex h-6 items-center rounded-[5px] bg-social-yellow-100 p-[1px]"
+          class="flex h-6 items-center rounded-[5px] p-[1px]"
+          :class="energy === 0 ? 'bg-social-red-100' : 'bg-social-yellow-100'"
         >
           <div
             class="relative flex h-full w-full items-center justify-center rounded-[5px] bg-social-blue-200 pl-6 pr-2"
@@ -56,7 +60,7 @@ const isOpen = ref(false);
                 class="h-4 w-[2px]"
                 :class="{
                   'bg-social-yellow-100': i < energy,
-                  'bg-slate-500': i >= energy,
+                  'bg-social-blue-400': i >= energy,
                 }"
                 v-for="(item, i) in 10"
                 :key="i"
@@ -67,9 +71,13 @@ const isOpen = ref(false);
               class="absolute -left-1 flex size-8 items-center justify-center"
             >
               <img
-                src="@/assets/img/icons/energy-icon.svg"
+                :src="
+                  energy === 0
+                    ? '/icons/energy-icon-red.svg'
+                    : '/icons/energy-icon.svg'
+                "
                 alt="energy"
-                class="size-6"
+                class="size-8"
               />
             </div>
           </div>

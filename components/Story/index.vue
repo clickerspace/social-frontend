@@ -47,12 +47,14 @@ onMounted(async () => {
   }
   story.value = await userStore().getStory();
 });
+const isOpen = ref(false);
 </script>
 <template>
   <div
     class="flex h-[calc(100dvh+1px)] w-full select-none items-end bg-cover bg-center bg-no-repeat"
     :class="bg"
   >
+    <ModalsNoEnergy v-model:is-open="isOpen" />
     <div
       class="hide-scrollbar flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
     >
@@ -84,7 +86,7 @@ onMounted(async () => {
         </button>
         <button
           class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
-          @click="moveToNextAndShowOptions(true)"
+          @click="isOpen = true"
         >
           <span>NEXT</span>
           <UIcon name="material-symbols:arrow-forward-ios" size="20" />

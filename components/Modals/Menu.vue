@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponentWithRetry } from "~/utils/helpers/defineAsyncComponentWithRetry";
+import { modalStore } from "~/store/modalStore";
+import { storeToRefs } from "#build/imports";
 
+const { isModalOpen, activeKey } = storeToRefs(modalStore());
 type ComponentMap = {
   contacts: Component | string;
   tasks: Component | string;
@@ -72,24 +75,26 @@ onUnmounted(() => {
   window.removeEventListener("resize", calculateAndApplyScale);
 });
 
-const activeKey = ref<keyof ComponentMap>("menu");
+// const activeKey = ref<keyof ComponentMap>("menu");
 const activeIndex = ref<number>(0);
 const activeCompIndex = (key: keyof ComponentMap, i: number) => {
-  activeKey.value = key;
+  modalStore().changeActiveKey(key);
+  // activeKey.value = key;
   activeIndex.value = i;
 };
 const isOpen = defineModel<boolean>("isOpen");
 const closeModal = () => {
-  isOpen.value = false;
+  modalStore().closeMenuModal();
   setTimeout(() => {
-    activeKey.value = "menu";
+    modalStore().changeActiveKey("menu");
+    // activeKey.value = "menu";
   }, 500);
 };
 const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
 </script>
 <template>
   <UModal
-    v-model="isOpen"
+    v-model="isModalOpen"
     fullscreen
     @close="closeModal"
     :ui="{
@@ -146,7 +151,7 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
             @update:is-open="() => closeModal()"
             @update:key="
               () => {
-                activeKey = 'menu';
+                modalStore().changeActiveKey('menu');
               }
             "
             @active-index="

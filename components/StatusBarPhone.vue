@@ -3,7 +3,7 @@ import { useLocalTime } from "~/utils/helpers/useLocalTime";
 
 const localTime = useLocalTime();
 const sp = ref(-99999);
-const energy = ref(15);
+const energy = ref(100);
 </script>
 <template>
   <div class="flex w-full items-center justify-between px-6 pt-2">
@@ -34,14 +34,19 @@ const energy = ref(15);
         class="flex h-4 items-center rounded-[5px] bg-transparent p-[1px] dark:bg-transparent"
       >
         <div
-          class="relative flex h-full w-full items-center justify-center rounded-[5px] border border-white bg-transparent pl-3 pr-1 dark:border-white"
+          class="relative flex h-full w-full items-center justify-center rounded-[5px] border bg-transparent pl-3 pr-1"
+          :class="
+            energy === 0
+              ? 'border-social-red-100'
+              : 'border-white dark:border-white'
+          "
         >
           <div class="flex gap-[1px]">
             <div
               class="h-2 w-[1px]"
               :class="{
                 'bg-white dark:bg-white': i < energy,
-                'bg-slate-500': i >= energy,
+                'bg-social-blue-400': i >= energy,
               }"
               v-for="(item, i) in 10"
               :key="i"
@@ -52,7 +57,11 @@ const energy = ref(15);
             class="absolute -left-[10px] flex size-8 items-center justify-center"
           >
             <img
-              src="@/assets/img/icons/energy-icon-white.svg"
+              :src="
+                energy === 0
+                  ? '/icons/energy-icon-red.svg'
+                  : '/icons/energy-icon-white.svg'
+              "
               alt="energy"
               class="size-5"
             />
