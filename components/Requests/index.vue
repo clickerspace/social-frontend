@@ -7,5 +7,5 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div><WalletConnectButton /></div>
+  <div>req</div>
 </template>

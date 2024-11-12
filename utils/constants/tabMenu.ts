@@ -1,17 +1,22 @@
 export const TabMenuItems = [
   {
-    label: "story",
-    component: "story",
-    icon: "/icons/telegram-logo.svg",
+    label: "contacts",
+    component: "contacts",
+    icon: "/icons/contacts-icon.svg",
   },
   {
     label: "tasks",
     component: "tasks",
-    icon: "/icons/telegram-logo.svg",
+    icon: "/icons/tasks-icon.svg",
   },
   {
-    label: "friends",
-    component: "friend",
-    icon: "/icons/telegram-logo.svg",
+    label: "requests",
+    component: "requests",
+    icon: "/icons/requests-icon.svg",
+  },
+  {
+    label: "settings",
+    component: "settings",
+    icon: "/icons/settings-icon.svg",
   },
 ];

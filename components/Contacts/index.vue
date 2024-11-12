@@ -7,5 +7,5 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>sett</div>
+  <div>conta</div>
 </template>

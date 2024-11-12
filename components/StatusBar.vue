@@ -1,11 +1,14 @@
 <script setup lang="ts">
 const sp = ref(-65485);
 const energy = ref(15);
+const isOpen = ref(false);
 </script>
 <template>
   <div class="flex h-12 w-full items-center justify-between px-5">
+    <ModalsMenu v-model:isOpen="isOpen" />
     <div
-      class="flex items-center justify-center rounded-lg bg-social-yellow-100 p-1"
+      class="flex cursor-pointer items-center justify-center rounded-lg bg-social-yellow-100 p-1"
+      @click="isOpen = true"
     >
       <UIcon
         name="hugeicons:smart-phone-01"

@@ -4,19 +4,23 @@ import type { TabsProvider } from "~/types";
 import { defineAsyncComponentWithRetry } from "~/utils/helpers/defineAsyncComponentWithRetry";
 
 type ComponentMap = {
-  story: Component | string;
+  contacts: Component | string;
   tasks: Component | string;
-  friends: Component | string;
+  settings: Component | string;
+  requests: Component | string;
 };
 const comps = shallowRef<ComponentMap>({
-  story: defineAsyncComponentWithRetry(
-    () => import("~/components/Story/index.vue"),
+  contacts: defineAsyncComponentWithRetry(
+    () => import("~/components/Contacts/index.vue"),
   ),
   tasks: defineAsyncComponentWithRetry(
     () => import("~/components/Tasks/index.vue"),
   ),
-  friends: defineAsyncComponentWithRetry(
-    () => import("~/components/Friends/index.vue"),
+  settings: defineAsyncComponentWithRetry(
+    () => import("~/components/Settings/index.vue"),
+  ),
+  requests: defineAsyncComponentWithRetry(
+    () => import("~/components/Requests/index.vue"),
   ),
 });
 
@@ -81,19 +85,24 @@ watchEffect(calculateAndApplyScale);
   <!-- TODO check if +1px needed causes scroll appearing in desktop but mobile is fine and fixes collapse-->
 
   <div
-    class="flex h-[calc(100dvh+1px)] w-full select-none flex-col overflow-hidden bg-cover bg-left-top bg-no-repeat"
+    class="flex h-full w-full select-none flex-col overflow-hidden bg-cover bg-left-top bg-no-repeat"
   >
     <UTabs
       v-model="tabNumber"
       :ui="{
-        wrapper: 'flex flex-col-reverse tab-menu w-full space-y-0 grow ',
-        container: `hide-scrollbar scrollable-element  scroll-smooth h-full `,
+        wrapper:
+          'flex flex-col-reverse items-center  w-full space-y-0 grow pb-5',
+        container: `hide-scrollbar scrollable-element  scroll-smooth h-full`,
         base: 'h-full',
         list: {
-          height:
-            'min-h-[50px] max-h-[92px] h-[24vw] targetlist-scale shadow-top relative',
-          background: ` bg-no-repeat bg-cover  bg-transparent dark:bg-transparent  shrink-0 !z-40 -mt-6 relative -bottom-[2px]  `,
+          background: `bg-[#f5f5f530] dark:bg-[#f5f5f530]`,
+          base: 'gap-5 backdrop-blur-xl',
+          rounded: 'rounded-[24px]',
+          padding: 'px-4 py-2',
+          width: 'w-fit',
+          height: 'h-fit',
           tab: {
+            height: 'h-full',
             padding: 'px-0 ',
             icon: 'hidden',
           },
@@ -106,13 +115,13 @@ watchEffect(calculateAndApplyScale);
     >
       <template #default="{ item, index, selected }">
         <div
-          class="!dark:bg-transparent z-40 mt-1 flex aspect-square h-[76px] w-full grow-0 items-center justify-center !bg-transparent bg-contain bg-center bg-no-repeat duration-300"
+          class="z-40 flex aspect-square items-center justify-center !bg-transparent"
         >
           <img
             :src="item.icon"
             :alt="item.label"
-            class="mb-1 size-[38px]"
-            :class="selected ? 'scale-110' : ''"
+            class="size-[38px]"
+            :class="selected ? 'scale-125' : ''"
           />
         </div>
       </template>
