@@ -67,7 +67,7 @@ const isOpen = ref(false);
               class="absolute -left-1 flex size-8 items-center justify-center"
             >
               <img
-                src="@/assets/img/icons/energy_icon.svg"
+                src="@/assets/img/icons/energy-icon.svg"
                 alt="energy"
                 class="size-6"
               />

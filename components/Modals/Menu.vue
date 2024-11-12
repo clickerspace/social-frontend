@@ -119,9 +119,12 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
       <div
         class="absolute right-[-105px] top-[142px] z-50 h-[64px] w-[4px] rounded-r-lg bg-black"
       ></div>
+      <StatusBarPhone class="absolute left-0 top-0 z-20" />
       <div
         class="hide-scrollbar relative h-full w-full overflow-y-scroll rounded-t-[32px] bg-cover bg-center bg-no-repeat pt-6"
-        :class="bg"
+        :class="
+          activeKey === 'menu' ? bg : 'bg-[#19043DCC]/80 backdrop-blur-[35px]'
+        "
       >
         <Transition>
           <component
