@@ -47,9 +47,9 @@ onBeforeMount(() => {
       ref="sentinel"
       class="z-20 -mb-[1px] h-[1px] w-full bg-transparent"
     ></div>
-    <div class="mobile-body flex w-full flex-col overflow-hidden">
+    <div class="mobile-body relative flex w-full flex-col overflow-hidden">
       <ClientOnly>
-        <TabMenu />
+        <StatusBar />
       </ClientOnly>
     </div>
   </div>

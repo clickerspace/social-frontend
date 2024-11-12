@@ -37,6 +37,13 @@ export default <Partial<Config>>{
           "900": "#573855",
           "950": "#492746",
         },
+        "social-yellow": {
+          "100": "#FFCC6F",
+        },
+        "social-blue": {
+          "100": "#024B76",
+          "200": "#002544",
+        },
       },
       screens: {
         xs: "325px",
