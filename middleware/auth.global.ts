@@ -9,9 +9,11 @@ const handleLogin = async (user: any) => {
     const user = userStore();
 
     const { setLoading } = user;
-
-    // const result = await retry(() => user.login(), 3, 1000);
-    const result = true;
+    const { DISABLE_BACKEND } = useRuntimeConfig().public;
+    const result = DISABLE_BACKEND
+      ? true
+      : await retry(() => user.login(), 3, 1000);
+    // const result = true;
 
     if (result) {
       //   const me = await retry(() => user.me(), 3, 1000); // add me function to fit this app

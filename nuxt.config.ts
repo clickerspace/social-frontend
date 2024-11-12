@@ -60,6 +60,7 @@ export default defineNuxtConfig({
       RETURN_URL: process.env.NUXT_PUBLIC_RETURN_URL,
       NUXT_MODE: process.env.NUXT_PUBLIC_MODE,
       PUBLIC_URL: process.env.NUXT_PUBLIC_URL,
+      DISABLE_BACKEND: process.env.NUXT_PUBLIC_DISABLE_BACKEND,
       API_URL: process.env.NUXT_PUBLIC_API_URL,
     },
   },
@@ -147,7 +148,7 @@ export default defineNuxtConfig({
         //   rewrite: (path: string) =>
         //     path.replace(/^\/events/, "/bridge/events"),
         // },
-        "/backend": {
+        "/backend/social": {
           target: `${process.env.NUXT_PUBLIC_API_URL}`,
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/backend/, ""),
@@ -175,7 +176,7 @@ export default defineNuxtConfig({
       //   "/events": {
       //     proxy: "https://bridge.ton.space/bridge/events", // needed if bridge error
       //   },
-      "/backend/**": { proxy: `${process.env.NUXT_PUBLIC_API_URL}/**` },
+      "/backend/**": { proxy: `${process.env.NUXT_PUBLIC_API_URL}/social/**` },
       "/workerapi": {
         proxy: "https://calm-waterfall-ffad.leirapcom.workers.dev",
       },

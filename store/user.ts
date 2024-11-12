@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
+import { cFetch } from "~/utils/helpers/cFetch";
 
 export interface User {
   name: string;
@@ -65,10 +66,8 @@ export const userStore = defineStore("userStore", {
   actions: {
     async login() {
       try {
-        const { initDataRaw } = retrieveLaunchParams();
-        const response = await fetch(`/backend/social/telegram-login`, {
-          body: JSON.stringify(initDataRaw),
-          method: "POST",
+        const response = await cFetch(`/backend/telegram-login`, {
+          method: "GET",
           headers: { "Content-Type": "application/json" },
         });
 
@@ -78,15 +77,55 @@ export const userStore = defineStore("userStore", {
         }
 
         const data = await response.json();
-        this.token = data.session;
-        this.expire = data.expire;
-
+        console.log("Login response:", data);
         return true;
       } catch (error) {
         console.error("Login failed:", error);
         return false;
       }
     },
+    async getStory() {
+      try {
+        const response = await cFetch(`/backend/get-story`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const data = await response.json();
+        console.log("Story response:", data);
+        return data;
+      } catch (error) {
+        console.error("Story failed:", error);
+        return false;
+      }
+    },
+    async continueStory(initialBrief: string, userChoice: string) {
+      try {
+        const response = await cFetch(`/backend/continue-story`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initialBrief, userChoice }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const data = await response.json();
+        console.log("Continue Story response:", data);
+        return data.response;
+      } catch (error) {
+        console.error("Continue Story failed:", error);
+        return false;
+      }
+    },
+
     setDayEnd(time: number) {
       this.dayEnd = time;
     },
