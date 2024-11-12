@@ -1,5 +1,9 @@
 export const TabMenuItems = [
   {
+    label: "menu",
+    component: "menu",
+  },
+  {
     label: "contacts",
     component: "contacts",
     icon: "/icons/contacts-icon.svg",
