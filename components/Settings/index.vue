@@ -1,11 +1,13 @@
 <script setup lang="ts">
+const emit = defineEmits(["update:isOpen"]);
+
 const credistModal = ref(false);
 const startCredits = () => {
   credistModal.value = !credistModal.value;
 };
 </script>
 <template>
-  <div class="flex w-full flex-col gap-2 px-5 pt-5">
+  <div class="relative flex h-full w-full flex-col gap-2 px-5 pt-5">
     <ModalsCredits v-model:is-open="credistModal" />
 
     <h1 class="text-[#D4D4D4]">Settings</h1>
@@ -14,6 +16,18 @@ const startCredits = () => {
       Credits
     </button>
     <button class="settings-button h-10">Watch Story</button>
+    <div
+      class="absolute bottom-2 left-1/2 flex w-full -translate-x-1/2 justify-center py-3"
+      @click="
+        () => {
+          emit('update:isOpen');
+        }
+      "
+    >
+      <button
+        class="flex h-2 w-48 items-center justify-center gap-2 rounded-[10px] bg-[#99999970] backdrop-blur-sm"
+      ></button>
+    </div>
   </div>
 </template>
 <style>
