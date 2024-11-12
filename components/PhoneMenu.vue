@@ -17,6 +17,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
           v-show="item.label !== 'menu'"
           :key="item.label"
           @click="emit('activeIndex', { label: item.label, index: i })"
+          class="cursor-pointer duration-300 hover:scale-125"
         >
           <img :src="item.icon" :alt="item.label" class="size-[38px]" />
         </span>

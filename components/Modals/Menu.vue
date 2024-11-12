@@ -123,16 +123,29 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
         class="hide-scrollbar relative h-full w-full overflow-y-scroll rounded-t-[32px] bg-cover bg-center bg-no-repeat pt-6"
         :class="bg"
       >
-        <component
-          :is="comps[activeKey as keyof ComponentMap]"
-          @update:is-open="() => closeModal()"
-          @active-index="
-            (e: any) => {
-              activeCompIndex(e.label, e.i);
-            }
-          "
-        />
+        <Transition>
+          <component
+            :is="comps[activeKey as keyof ComponentMap]"
+            @update:is-open="() => closeModal()"
+            @active-index="
+              (e: any) => {
+                activeCompIndex(e.label, e.i);
+              }
+            "
+          />
+        </Transition>
       </div>
     </div>
   </UModal>
 </template>
+<style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>
