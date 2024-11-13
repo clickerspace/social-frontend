@@ -21,7 +21,8 @@ console.log(socialPoints.value);
     </div>
     <div class="flex items-center gap-3">
       <div
-        class="flex h-6 items-center rounded-[5px] bg-social-yellow-100 p-[1px]"
+        class="flex h-6 cursor-pointer items-center rounded-[5px] bg-social-yellow-100 p-[1px]"
+        @click="modalStore().openMenuModal('market')"
       >
         <div
           class="relative flex h-full w-full items-center justify-center rounded-[5px] bg-social-blue-200 pl-9 pr-2"
