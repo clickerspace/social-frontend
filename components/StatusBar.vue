@@ -42,6 +42,7 @@ console.log(socialPoints.value);
       </div>
       <UChip
         :text="energy"
+        :show="energy > 0"
         size="xl"
         :ui="{
           base: '!ring-[1px] !ring-social-yellow-100 !text-white',
@@ -66,7 +67,6 @@ console.log(socialPoints.value);
                 :key="i"
               ></div>
             </div>
-            >
 
             <div
               class="absolute -left-1 flex size-8 items-center justify-center"

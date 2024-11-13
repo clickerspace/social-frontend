@@ -5,6 +5,7 @@ export interface Props {
   avatar?: string;
   buttonText?: string;
   name?: string;
+  type?: string;
 }
 const { avatar, buttonText, name } = defineProps<Props>();
 const clicked = ref(false);
@@ -31,6 +32,16 @@ const handleClick = () => {
           <span class="font-sm font-semibold">{{ name }}</span>
         </div>
       </div>
+      <button
+        @click="handleClick()"
+        v-if="type === 'friendRequest'"
+        class="flex w-20 items-center justify-center rounded-md bg-social-red-100 p-2"
+      >
+        <UIcon v-if="clicked" name="svg-spinners:180-ring-with-bg" size="20" />
+        <span v-else>
+          {{ buttonText }}
+        </span>
+      </button>
       <button
         @click="handleClick()"
         v-if="buttonText"

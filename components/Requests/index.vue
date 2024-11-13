@@ -14,13 +14,13 @@ onMounted(async () => {
       <div
         class="hide-scrollbar flex h-[calc(100dvh-260px)] flex-col gap-3 overflow-y-scroll"
       >
-        <!-- TODO add another button for rejectfriendrequest current implementation wont work-->
         <ContactsCard
           v-for="item in friendshipRequests"
           :key="item.name"
           :avatar="item.avatar"
           :name="item.name"
           :buttonText="item.buttonText"
+          type="friendRequest"
           @handle-click="
             item.buttonText === 'ADD'
               ? userStore().acceptFriendRequest(item.id)
