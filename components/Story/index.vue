@@ -11,19 +11,6 @@ const bg = ref('bg-[url("@/assets/img/game-bg.png")]');
 const story = ref();
 const { DISABLED_BACKEND } = useRuntimeConfig().public;
 const applySelectionAndContinueStory = async (selection: string) => {
-  if (DISABLED_BACKEND) {
-    story.value = {
-      key: "Story",
-      brief: "This is a story",
-      options: ["Option 1", "Option 2"],
-      next: "This is the next story",
-    };
-    showNext.value = false;
-    showOptions.value = false;
-    nextIndex.value = 0;
-
-    return;
-  }
   story.value = await userStore().continueStory(
     story.value.brief,
     story.value.next,
@@ -42,9 +29,6 @@ const moveToNextAndShowOptions = async (value: boolean) => {
 };
 
 onMounted(async () => {
-  if (DISABLED_BACKEND) {
-    return;
-  }
   story.value = await userStore().getStory();
 });
 const isOpen = ref(false);
@@ -86,7 +70,7 @@ const isOpen = ref(false);
         </button>
         <button
           class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
-          @click="isOpen = true"
+          @click="moveToNextAndShowOptions(true)"
         >
           <span>NEXT</span>
           <UIcon name="material-symbols:arrow-forward-ios" size="20" />

@@ -18,6 +18,7 @@ export interface User {
   version: string;
   connected: boolean;
   walletAddress: string;
+  cryptoToken: number;
   //fx settings
   musicLevel: number;
   musicOn: boolean;
@@ -25,6 +26,12 @@ export interface User {
 
   soundFxOn: boolean;
   vibration: boolean;
+  energy: number;
+  socialPoints: number;
+  friendshipRequests: any[];
+  searchedContact: any;
+  contacts: any[];
+  helpList: any[];
   // fx settings end
 }
 
@@ -34,6 +41,8 @@ export const userStore = defineStore("userStore", {
       name: "John Doe",
       token: null,
       expire: null,
+      socialPoints: 0,
+      energy: 0,
 
       telegramId: "",
 
@@ -59,7 +68,11 @@ export const userStore = defineStore("userStore", {
       soundFxLevel: 50,
       soundFxOn: true,
       vibration: true,
-
+      cryptoToken: 0,
+      friendshipRequests: [],
+      searchedContact: {},
+      contacts: [],
+      helpList: [],
       // fx settings end
     };
   },
@@ -77,6 +90,7 @@ export const userStore = defineStore("userStore", {
         }
 
         const data = await response.json();
+        this.assignUserData(data);
         console.log("Login response:", data);
         return true;
       } catch (error) {
@@ -96,9 +110,9 @@ export const userStore = defineStore("userStore", {
           return false;
         }
 
-        const data = await response.json();
-        console.log("Story response:", data);
-        return data;
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        return result;
       } catch (error) {
         console.error("Story failed:", error);
         return false;
@@ -125,31 +139,289 @@ export const userStore = defineStore("userStore", {
           return false;
         }
 
-        const data = await response.json();
-        console.log("Continue Story response:", data);
-        return data.response;
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        console.log("Continue Story response:", result);
+        return result.response;
       } catch (error) {
         console.error("Continue Story failed:", error);
         return false;
       }
     },
+    assignUserData(user: any) {
+      const gameUser = user;
 
-    setDayEnd(time: number) {
-      this.dayEnd = time;
-    },
-
-    assignUserData(res: any) {
-      const gameUser = res?.gameUser || res?.updatedUser;
-
-      this.userId = gameUser?.user_id;
+      this.userId = gameUser?.id;
       this.name = gameUser?.name;
-      this.telegramId = gameUser?.email?.split("@")[0];
+      this.telegramId = gameUser?.id;
+      this.energy = gameUser?.energy;
+      this.socialPoints = gameUser?.socialPoint;
+      this.cryptoToken = gameUser?.tokens;
       // THOSE INDEX MAY CHANGE IF ERROR CHECK
       this.withdrawableTokens = gameUser?.withdrawable_tokens?.toFixed(2) || 0;
-      this.updateTime = Date.now();
-      this.gameId = gameUser._id;
+      this.updateTime = gameUser?.updatedAt;
+      this.gameId = gameUser.id;
 
       //   this.errorState = "false";
+    },
+    async searchForFriend(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/friend/search?userId=${tgId}`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        if (result.username) {
+          this.searchedContact = [
+            {
+              id: result.id,
+              name: result.username,
+              avatar: "/avatar/avatar2.png",
+              buttonText: "ADD",
+            },
+          ];
+        }
+        this.assignUserData(user);
+        return result;
+      } catch (error) {
+        console.error("Search for friend failed:", error);
+        return false;
+      }
+    },
+    async addFriend(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/friend/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: tgId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+
+        return result;
+      } catch (error) {
+        console.error("Add friend failed:", error);
+        return false;
+      }
+    },
+    async removeFriend(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/friend/remove`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: tgId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        return result;
+      } catch (error) {
+        console.error("Remove friend failed:", error);
+        return false;
+      }
+    },
+    async acceptFriendRequest(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/friend/accept`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: tgId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        await this.friendRequests();
+        return result;
+      } catch (error) {
+        console.error("Accept friend request failed:", error);
+        return false;
+      }
+    },
+    async rejectFriendRequest(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/friend/reject `, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: tgId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        await this.friendRequests();
+        return result;
+      } catch (error) {
+        console.error("Cancel friend request failed:", error);
+        return false;
+      }
+    },
+    async askForHelp(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/help/requests/send`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: tgId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        return result;
+      } catch (error) {
+        console.error("Help friend failed:", error);
+        return false;
+      }
+    },
+    async sendHelp(tgId: string) {
+      try {
+        const response = await cFetch(`/backend/help/requests/respond`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: tgId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        await this.getHelpRequests();
+        return result;
+      } catch (error) {
+        console.error("Send help failed:", error);
+        return false;
+      }
+    },
+    async friendRequests() {
+      try {
+        const response = await cFetch(`/backend/friend/requests`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        this.friendshipRequests = result.map(
+          (item: { initiator: { username: string; id: string } }) => ({
+            name: item.initiator.username,
+            avatar: "/avatar/avatar2.png",
+            buttonText: "ADD",
+            id: item.initiator.id,
+          }),
+        );
+        return result;
+      } catch (error) {
+        console.error("Friend requests failed:", error);
+        return false;
+      }
+    },
+    async getFriends() {
+      try {
+        const response = await cFetch(`/backend/friend/list`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        this.contacts = result.map(
+          (item: {
+            username: string;
+            id: string;
+            hasEnergyRequest: boolean;
+          }) => ({
+            name: item.username,
+            avatar: "/avatar/avatar2.png",
+            buttonText: !item.hasEnergyRequest ? "ASK HELP" : "",
+            id: item.id,
+          }),
+        );
+        return result;
+      } catch (error) {
+        console.error("Get friends failed:", error);
+        return false;
+      }
+    },
+    async getHelpRequests() {
+      try {
+        const response = await cFetch(`/backend/help/requests/get`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        this.helpList = result.map(
+          (item: { helped: { username: string; id: string } }) => ({
+            name: item.helped.username,
+            avatar: "/avatar/avatar2.png",
+            buttonText: "SEND HELP",
+            id: item.helped.id,
+          }),
+        );
+        return result;
+      } catch (error) {
+        console.error("Get help requests failed:", error);
+        return false;
+      }
+    },
+    setDayEnd(time: number) {
+      this.dayEnd = time;
     },
 
     setConnected(bool: boolean) {
@@ -208,9 +480,5 @@ export const userStore = defineStore("userStore", {
     setVibration(value: boolean) {
       this.vibration = value;
     },
-  },
-
-  persist: {
-    storage: localStorage,
   },
 });

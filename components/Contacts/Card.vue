@@ -14,6 +14,10 @@ const handleClick = () => {
     clicked.value = true;
     emit("handleClick");
   }
+
+  setTimeout(() => {
+    clicked.value = false;
+  }, 1000);
 };
 </script>
 <template>

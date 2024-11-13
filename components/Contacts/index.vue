@@ -1,38 +1,26 @@
 <script setup lang="ts">
-import { set } from "@vueuse/core";
-
+import { storeToRefs } from "#build/imports";
+import { userStore } from "~/store/user";
+const { searchedContact, contacts } = storeToRefs(userStore());
 const emit = defineEmits(["update:key"]);
 
-const contacts = [
-  {
-    name: "John Doe",
-    avatar: "/avatar/avatar1.png",
-    buttonText: "HELP",
-  },
-  {
-    name: "Jane Doe",
-    avatar: "/avatar/avatar3.png",
-    buttonText: "HELP",
-  },
-  {
-    name: "Astroid Destroyer",
-    avatar: "/avatar/avatar2.png",
-    buttonText: "HELP",
-  },
-];
 const clicked = ref(false);
-const helpFriend = () => {
-  console.log("help friend");
-};
-const addFriend = () => {
+
+const tgId = ref("");
+
+const searchFriend = async () => {
   if (!clicked.value) {
     clicked.value = true;
   }
+  await userStore().searchForFriend(tgId.value);
+
   setTimeout(() => {
     clicked.value = false;
   }, 1000);
-  console.log("add friend");
 };
+onMounted(async () => {
+  await userStore().getFriends();
+});
 </script>
 <template>
   <PhoneLayout title="Contacts" @update:key="emit('update:key')">
@@ -52,13 +40,14 @@ const addFriend = () => {
               },
             }"
             type="text"
+            v-model="tgId"
             placeholder="Add Phone Number"
             icon="material-symbols:call"
             class="w-full"
           />
 
           <button
-            @click="addFriend()"
+            @click="!clicked ? searchFriend() : null"
             class="flex h-12 w-16 items-center justify-center rounded-md bg-social-purple-200"
           >
             <UIcon
@@ -66,17 +55,35 @@ const addFriend = () => {
               name="svg-spinners:180-ring-with-bg"
               size="20"
             />
-            <span v-else> ADD </span>
+
+            <UIcon name="material-symbols:search" v-else size="20" />
           </button>
         </div>
 
+        <ContactsCard
+          v-for="item in searchedContact"
+          :key="item.name"
+          :avatar="item.avatar"
+          :name="item.name"
+          :buttonText="item.buttonText"
+          @handle-click="
+            item.buttonText === 'ADD'
+              ? userStore().addFriend(item.id)
+              : userStore().askForHelp(item.id)
+          "
+        />
+        <!-- TODO ADD A SEPERATOR BETWEEN SEARCHED AND CONTACTS -->
         <ContactsCard
           v-for="item in contacts"
           :key="item.name"
           :avatar="item.avatar"
           :name="item.name"
           :buttonText="item.buttonText"
-          @handle-click="helpFriend()"
+          @handle-click="
+            item.buttonText === 'ADD'
+              ? userStore().addFriend(item.id)
+              : userStore().askForHelp(item.id)
+          "
         />
       </div>
       <ContactsPhoneBox />

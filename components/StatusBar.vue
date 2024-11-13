@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { modalStore } from "~/store/modalStore";
 import { storeToRefs } from "#build/imports";
-
+import { userStore } from "~/store/user";
+const { energy, socialPoints } = storeToRefs(userStore());
 const { isModalOpen } = storeToRefs(modalStore());
-const sp = ref(-65485);
-const energy = ref(12);
+console.log(socialPoints.value);
 </script>
 <template>
   <div class="flex h-12 w-full items-center justify-between px-5">
@@ -27,7 +27,7 @@ const energy = ref(12);
           class="relative flex h-full w-full items-center justify-center rounded-[5px] bg-social-blue-200 pl-9 pr-2"
         >
           <span class="text-xs text-social-yellow-100">
-            {{ sp }}
+            {{ socialPoints }}
           </span>
           <div
             class="absolute left-0 flex size-8 items-center justify-center rounded-full border border-social-blue-200 bg-social-yellow-100"
@@ -50,7 +50,7 @@ const energy = ref(12);
       >
         <div
           class="flex h-6 items-center rounded-[5px] p-[1px]"
-          :class="energy === 0 ? 'bg-social-red-100' : 'bg-social-yellow-100'"
+          :class="energy <= 0 ? 'bg-social-red-100' : 'bg-social-yellow-100'"
         >
           <div
             class="relative flex h-full w-full items-center justify-center rounded-[5px] bg-social-blue-200 pl-6 pr-2"

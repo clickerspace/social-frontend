@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useLocalTime } from "~/utils/helpers/useLocalTime";
-
+import { storeToRefs } from "#build/imports";
+import { userStore } from "~/store/user";
+const { energy, socialPoints } = storeToRefs(userStore());
 const localTime = useLocalTime();
-const sp = ref(-99999);
-const energy = ref(100);
 </script>
 <template>
   <div class="flex w-full items-center justify-between px-6 pt-2">
@@ -36,7 +36,7 @@ const energy = ref(100);
         <div
           class="relative flex h-full w-full items-center justify-center rounded-[5px] border bg-transparent pl-3 pr-1"
           :class="
-            energy === 0
+            energy <= 0
               ? 'border-social-red-100'
               : 'border-white dark:border-white'
           "
