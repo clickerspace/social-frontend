@@ -38,9 +38,7 @@ const handleClick = () => {
         class="flex w-20 items-center justify-center rounded-md bg-social-red-100 p-2"
       >
         <UIcon v-if="clicked" name="svg-spinners:180-ring-with-bg" size="20" />
-        <span v-else>
-          {{ buttonText }}
-        </span>
+        <span v-else> REJECT </span>
       </button>
       <button
         @click="handleClick()"
