@@ -24,4 +24,9 @@ export const PhoneMenuItems = [
     to: "https://t.me/clicker_farm_bot",
     icon: "/icons/farm-clicker-icon.png",
   },
+  {
+    label: "test",
+    component: "test",
+    icon: "/icons/farm-clicker-icon.png",
+  },
 ];

@@ -14,6 +14,7 @@ type ComponentMap = {
   maps: Component | string;
   market: Component | string;
   clock: Component | string;
+  test: Component | string;
 };
 const comps = shallowRef<ComponentMap>({
   contacts: defineAsyncComponentWithRetry(
@@ -41,6 +42,7 @@ const comps = shallowRef<ComponentMap>({
     () => import("~/components/Market/index.vue"),
   ),
   clock: defineAsyncComponentWithRetry(() => import("~/components/Clock.vue")),
+  test: defineAsyncComponentWithRetry(() => import("~/components/Test.vue")),
 });
 const calculateAndApplyScale = () => {
   const width = window.innerWidth;
@@ -156,7 +158,7 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
             "
             @active-index="
               (e: any) => {
-                activeCompIndex(e.label, e.i);
+                activeCompIndex(e.component, e.i);
               }
             "
           />

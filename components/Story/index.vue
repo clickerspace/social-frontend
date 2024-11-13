@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { userStore } from "~/store/user";
-
+import { storeToRefs } from "#build/imports";
+import { modalStore } from "~/store/modalStore";
+const { story } = storeToRefs(userStore());
 const emit = defineEmits(["mounted"]);
 onMounted(() => {
   nextTick(() => {
@@ -8,7 +10,7 @@ onMounted(() => {
   });
 });
 const bg = ref('bg-[url("@/assets/img/game-bg.png")]');
-const story = ref();
+
 const { DISABLED_BACKEND } = useRuntimeConfig().public;
 const applySelectionAndContinueStory = async (selection: string) => {
   story.value = await userStore().continueStory(
@@ -16,20 +18,20 @@ const applySelectionAndContinueStory = async (selection: string) => {
     story.value.next,
     selection,
   );
+  console.log(story.value);
   showOptions.value = false;
   showNext.value = false;
   console.log(story.value);
 };
 const showNext = ref(false);
 const showOptions = ref(false);
-const nextIndex = ref(0);
 const moveToNextAndShowOptions = async (value: boolean) => {
   showNext.value = value;
   showOptions.value = value;
 };
 
 onMounted(async () => {
-  story.value = await userStore().getStory();
+  await userStore().getStory();
 });
 const isOpen = ref(false);
 </script>
@@ -63,12 +65,21 @@ const isOpen = ref(false);
               ? 'border-[#999999] text-[#999999]'
               : 'border-white text-white dark:border-white dark:text-white'
           "
-          @click="moveToNextAndShowOptions(false)"
+          @click="
+            story?.next
+              ? moveToNextAndShowOptions(false)
+              : modalStore().openMenuModal('menu')
+          "
         >
-          <UIcon name="material-symbols:arrow-back-ios" size="20" />
-          <span>BACK</span>
+          <UIcon
+            v-if="story?.next"
+            name="material-symbols:arrow-back-ios"
+            size="20"
+          />
+          <span>{{ story.next ? "BACK" : "CHECK PHONE" }}</span>
         </button>
         <button
+          v-if="story?.next"
           class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
           @click="moveToNextAndShowOptions(true)"
         >

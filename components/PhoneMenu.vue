@@ -14,7 +14,9 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
         :key="item.label"
         :to="item.to"
         @click="
-          !item.to ? emit('activeIndex', { label: item.label, index: i }) : ''
+          !item.to
+            ? emit('activeIndex', { component: item.component, index: i })
+            : ''
         "
         class="flex cursor-pointer flex-col items-center duration-300 hover:scale-110"
       >
@@ -34,7 +36,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
           v-for="(item, i) in TabMenuItems"
           v-show="item.label !== 'menu'"
           :key="item.label"
-          @click="emit('activeIndex', { label: item.label, index: i })"
+          @click="emit('activeIndex', { component: item.component, index: i })"
           class="cursor-pointer duration-300 hover:scale-125"
         >
           <img :src="item.icon" :alt="item.label" class="size-[38px]" />

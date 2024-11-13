@@ -32,6 +32,9 @@ export interface User {
   searchedContact: any;
   contacts: any[];
   helpList: any[];
+  location: string;
+  story: any;
+  currentStory: string;
   // fx settings end
 }
 
@@ -73,6 +76,9 @@ export const userStore = defineStore("userStore", {
       searchedContact: {},
       contacts: [],
       helpList: [],
+      location: "",
+      currentStory: "",
+      story: {},
       // fx settings end
     };
   },
@@ -98,11 +104,14 @@ export const userStore = defineStore("userStore", {
         return false;
       }
     },
-    async getStory() {
+    async getStory(key: string = "dorm_rooms") {
       try {
         const response = await cFetch(`/backend/get-story`, {
-          method: "GET",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key,
+          }),
         });
 
         if (!response.ok) {
@@ -111,6 +120,8 @@ export const userStore = defineStore("userStore", {
         }
 
         const { result, user } = await response.json();
+        this.story = result;
+        this.currentStory = result.storyId;
         this.assignUserData(user);
         return result;
       } catch (error) {
@@ -130,13 +141,14 @@ export const userStore = defineStore("userStore", {
           body: JSON.stringify({
             initialBrief,
             initialNext: initialNext,
+            storyId: this.currentStory,
             userChoice,
           }),
         });
 
         if (!response.ok) {
           console.error(`HTTP error! status: ${response.status}`);
-          return false;
+          return { brief: "You should rest or help your friends." };
         }
 
         const { result, user } = await response.json();
@@ -145,7 +157,7 @@ export const userStore = defineStore("userStore", {
         return result.response;
       } catch (error) {
         console.error("Continue Story failed:", error);
-        return false;
+        return { brief: "You should rest or help your friends." };
       }
     },
     assignUserData(user: any) {
