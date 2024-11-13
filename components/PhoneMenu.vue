@@ -16,7 +16,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
         @click="
           !item.to ? emit('activeIndex', { label: item.label, index: i }) : ''
         "
-        class="flex cursor-pointer flex-col items-center"
+        class="flex cursor-pointer flex-col items-center duration-300 hover:scale-110"
       >
         <img :src="item.icon" :alt="item.label" class="size-[44px]" />
         <span class="line-clamp-1 text-[10px] capitalize">
