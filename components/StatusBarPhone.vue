@@ -45,10 +45,10 @@ const localTime = useLocalTime();
             <div
               class="h-2 w-[1px]"
               :class="{
-                'bg-white dark:bg-white': i < energy,
-                'bg-social-blue-400': i >= energy,
+                'bg-white dark:bg-white': i < (energy / 100) * 10,
+                'bg-social-blue-400': i >= (energy / 100) * 10,
               }"
-              v-for="(item, i) in 10"
+              v-for="(_, i) in 10"
               :key="i"
             ></div>
           </div>

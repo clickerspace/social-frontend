@@ -41,8 +41,7 @@ console.log(socialPoints.value);
         >
       </div>
       <UChip
-        :show="energy > 10"
-        :text="energy > 99 ? '99+' : energy"
+        :text="energy"
         size="xl"
         :ui="{
           base: '!ring-[1px] !ring-social-yellow-100 !text-white',
@@ -60,13 +59,14 @@ console.log(socialPoints.value);
               <div
                 class="h-4 w-[2px]"
                 :class="{
-                  'bg-social-yellow-100': i < energy,
-                  'bg-social-blue-400': i >= energy,
+                  'bg-social-yellow-100': i < (energy / 100) * 10,
+                  'bg-social-blue-400': i >= (energy / 100) * 10,
                 }"
-                v-for="(item, i) in 10"
+                v-for="(_, i) in 10"
                 :key="i"
               ></div>
             </div>
+            >
 
             <div
               class="absolute -left-1 flex size-8 items-center justify-center"
