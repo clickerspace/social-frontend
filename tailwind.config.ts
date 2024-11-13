@@ -52,6 +52,7 @@ export default <Partial<Config>>{
         },
         "social-purple": {
           "100": "#9285AC",
+          "200": "#7C6F88",
         },
       },
       screens: {
