@@ -1,8 +1,49 @@
 <script setup lang="ts">
 const emit = defineEmits(["update:key"]);
+const marketItems = [
+  {
+    name: "Energy Package",
+    icon: "hugeicons:energy-rectangle",
+    price: "25",
+    product: "50 Energy",
+  },
+  {
+    name: "SP Package",
+    icon: "ci:users-group",
+    price: "45",
+    product: "50 SP",
+  },
+  {
+    name: "Watch AD",
+    icon: "hugeicons:advertisement",
+    price: "0",
+    product: "25 Energy & 25 SP",
+  },
+];
+const clicked = ref(false);
+const handleClick = () => {
+  if (!clicked.value) {
+    clicked.value = true;
+  }
+};
 </script>
 <template>
-  <PhoneLayout title="Market" @update:key="emit('update:key')"
-    >market</PhoneLayout
-  >
+  <PhoneLayout title="Market" @update:key="emit('update:key')">
+    <div
+      class="flex w-full cursor-pointer select-none items-center justify-between px-2 py-3"
+      :class="clicked ? 'radial-bg-disabled' : 'radial-bg'"
+      v-for="item in marketItems"
+      :key="item.name"
+      @click="handleClick()"
+    >
+      <div class="flex items-center gap-2">
+        <UIcon :name="item.icon" size="42" class="text-social-purple-100" />
+        <div class="flex flex-col gap-1">
+          <span class="font-sm font-semibold">{{ item.name }}</span>
+          <span class="text-xs font-light">{{ item.product }}</span>
+        </div>
+      </div>
+      <div class="text-lg font-black">${{ item.price }}</div>
+    </div>
+  </PhoneLayout>
 </template>

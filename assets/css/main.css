@@ -22,3 +22,12 @@ html {
   );
   @apply rounded-md border border-[#494552] backdrop-blur-[10px];
 }
+
+.radial-bg-disabled {
+  background: radial-gradient(
+    169.72% 89.02% at 80.91% -10.53%,
+    rgba(102, 102, 102, 0.2) 0%,
+    rgba(67, 58, 74, 0.2) 100%
+  );
+  @apply cursor-not-allowed rounded-md border border-[#494552] opacity-50 backdrop-blur-[10px];
+}
