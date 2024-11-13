@@ -16,6 +16,11 @@ const marketItems = [
     icon: "ic:baseline-location-on",
     daysAgo: "2",
   },
+  {
+    name: "Campus",
+    icon: "ic:baseline-location-on",
+    daysAgo: "2",
+  },
 ];
 const clicked = ref(false);
 const handleClick = () => {

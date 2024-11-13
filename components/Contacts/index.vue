@@ -79,10 +79,11 @@ onMounted(async () => {
           :avatar="item.avatar"
           :name="item.name"
           :buttonText="item.buttonText"
+          type="friendList"
           @handle-click="
-            item.buttonText === 'ADD'
-              ? userStore().addFriend(item.id)
-              : userStore().askForHelp(item.id)
+            item.buttonText === 'ASK HELP'
+              ? userStore().askForHelp(item.id)
+              : userStore().removeFriend(item.id)
           "
         />
       </div>
