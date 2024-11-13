@@ -3,6 +3,6 @@ const emit = defineEmits(["update:key"]);
 </script>
 <template>
   <PhoneLayout title="Wallet" @update:key="emit('update:key')">
-    <WalletConnectButton />
+    <WalletState />
   </PhoneLayout>
 </template>

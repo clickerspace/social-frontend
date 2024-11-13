@@ -21,6 +21,7 @@ export function useTonConnect() {
     };
     tonconnect.value?.onStatusChange(() => {
       if (tonconnect.value?.connected) {
+        console.log("tonconnect.value :>> ", tonconnect.value);
         userStore().setConnected(tonconnect.value?.connected);
         if (tonconnect.value.account?.address) {
           userStore().setWalletAddress(tonconnect.value.account.address);

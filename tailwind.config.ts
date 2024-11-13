@@ -4,7 +4,6 @@ import type { Config } from "tailwindcss";
 export default <Partial<Config>>{
   theme: {
     fontFamily: {
-      spartan: ["League Spartan"],
       luckiestGuy: ["Luckiest Guy"],
       roboto: ["Roboto"],
       londrina: ["Londrina Solid"],
@@ -50,6 +49,9 @@ export default <Partial<Config>>{
         },
         "social-red": {
           "100": "#FF0048",
+        },
+        "social-purple": {
+          "100": "#9285AC",
         },
       },
       screens: {

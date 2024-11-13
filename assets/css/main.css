@@ -14,3 +14,11 @@ html {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.radial-bg {
+  background: radial-gradient(
+    169.72% 89.02% at 80.91% -10.53%,
+    rgba(102, 102, 102, 0.5) 0%,
+    rgba(67, 58, 74, 0.5) 100%
+  );
+  @apply rounded-md border border-[#494552] backdrop-blur-[10px];
+}

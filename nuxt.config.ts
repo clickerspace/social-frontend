@@ -121,7 +121,6 @@ export default defineNuxtConfig({
     prefetch: true,
     display: "swap",
     families: {
-      "League Spartan": [100, 200, 300, 400, 500, 600, 700, 800, 900],
       Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       Roboto: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       "Luckiest Guy": [400],
