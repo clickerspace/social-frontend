@@ -5,6 +5,7 @@ const { searchedContact, contacts } = storeToRefs(userStore());
 const emit = defineEmits(["update:key"]);
 
 const clicked = ref(false);
+const list = ref(null);
 
 const tgId = ref("");
 
@@ -26,6 +27,7 @@ onMounted(async () => {
   <PhoneLayout title="Contacts" @update:key="emit('update:key')">
     <div class="flex h-full w-full flex-col justify-between pb-12">
       <div
+        ref="list"
         class="hide-scrollbar flex h-[calc(100dvh-260px)] flex-col gap-3 overflow-y-scroll"
       >
         <div class="flex items-center gap-3">
@@ -86,10 +88,7 @@ onMounted(async () => {
               : userStore().removeFriend(item.id)
           "
         />
-        <Suspense>
-          <ContactsInfiniteScroll />
-          <template #fallback> Loading.. </template>
-        </Suspense>
+        <ContactsInfiniteScroll />
       </div>
       <ContactsPhoneBox />
     </div>
