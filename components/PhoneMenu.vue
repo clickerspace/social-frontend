@@ -39,7 +39,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
           @click="emit('activeIndex', { component: item.component, index: i })"
           class="cursor-pointer duration-300 hover:scale-125"
         >
-          <img :src="item.icon" :alt="item.label" class="size-[38px]" />
+          <img :src="item.icon" :alt="item.label" class="size-[55px]" />
         </span>
       </div>
       <div
