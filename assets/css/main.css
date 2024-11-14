@@ -1,11 +1,13 @@
 body {
   -ms-overflow-style: none !important; /* IE and Edge */
   scrollbar-width: none !important; /* Firefox */
-  @apply font-inter;
+
+  @apply font-inter text-white;
 }
 html {
   -ms-overflow-style: none !important; /* IE and Edge */
   scrollbar-width: none !important; /* Firefox */
+  @apply font-inter text-white;
 }
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
