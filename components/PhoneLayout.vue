@@ -18,8 +18,11 @@ const { title } = defineProps<Props>();
       "
     >
       <button
-        class="flex h-2 w-48 items-center justify-center gap-2 rounded-[10px] bg-[#99999970] backdrop-blur-sm"
-      ></button>
+        class="flex w-48 items-center justify-center gap-2 rounded-[10px] bg-[#99999970] backdrop-blur-sm"
+      >
+        <UIcon name="material-symbols:arrow-back-ios" size="10" />
+        <span class="text-[8px]">BACK</span>
+      </button>
     </div>
   </div>
 </template>
