@@ -2,6 +2,8 @@
 import { useLocalTime } from "~/utils/helpers/useLocalTime";
 import { storeToRefs } from "#build/imports";
 import { userStore } from "~/store/user";
+import { modalStore } from "~/store/modalStore";
+
 const { energy, socialPoints } = storeToRefs(userStore());
 const localTime = useLocalTime();
 </script>
@@ -31,7 +33,8 @@ const localTime = useLocalTime();
       </div>
 
       <div
-        class="flex h-4 items-center rounded-[5px] bg-transparent p-[1px] dark:bg-transparent"
+        class="flex h-4 cursor-pointer items-center rounded-[5px] bg-transparent p-[1px] dark:bg-transparent"
+        @click="modalStore().openMenuModal('market')"
       >
         <div
           class="relative flex h-full w-full items-center justify-center rounded-[5px] border bg-transparent pl-3 pr-1"

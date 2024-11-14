@@ -50,8 +50,9 @@ console.log(socialPoints.value);
         }"
       >
         <div
-          class="flex h-6 items-center rounded-[5px] p-[1px]"
+          class="flex h-6 cursor-pointer items-center rounded-[5px] p-[1px]"
           :class="energy <= 0 ? 'bg-social-red-100' : 'bg-social-yellow-100'"
+          @click="modalStore().openMenuModal('market')"
         >
           <div
             class="relative flex h-full w-full items-center justify-center rounded-[5px] bg-social-blue-200 pl-6 pr-2"
