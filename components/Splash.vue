@@ -29,7 +29,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex h-[100dvh] w-full flex-col items-center justify-around gap-5 bg-social-blue-600 bg-gradient-to-t from-[#31456f] to-social-blue-600 px-10 py-5"
+    class="flex h-[100dvh] w-full flex-col items-center justify-around gap-5 bg-[url('@/assets/img/tutorial-bg.png')] bg-cover bg-center bg-no-repeat px-10 py-5"
   >
     <div class="flex w-full flex-col items-center gap-5">
       <img

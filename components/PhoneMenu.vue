@@ -8,7 +8,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
   <div
     class="flex h-full w-full select-none flex-col items-center justify-between overflow-hidden"
   >
-    <div class="flex w-full flex-wrap justify-start gap-5 p-7">
+    <div class="grid w-full grid-cols-4 gap-5 p-7">
       <NuxtLink
         v-for="(item, i) in PhoneMenuItems"
         :key="item.label"
@@ -20,7 +20,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
         "
         class="flex cursor-pointer flex-col items-center duration-300 hover:scale-110"
       >
-        <img :src="item.icon" :alt="item.label" class="size-[44px]" />
+        <img :src="item.icon" :alt="item.label" class="h-full w-full" />
         <span class="line-clamp-1 text-[10px] capitalize">
           {{
             item.label.length > 6 ? item.label.slice(0, 6) + "..." : item.label

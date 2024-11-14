@@ -46,6 +46,11 @@ onMounted(() => {
       <Loading />
     </div>
   </transition>
+  <!-- <div
+    class="bg-primary-800 absolute inset-0 z-50 flex h-[calc(100dvh+1px)] flex-col items-center justify-around bg-cover bg-center bg-no-repeat"
+  >
+    <Tutorial />
+  </div> -->
   <div
     class="flex h-[calc(100dvh+1px)] w-full select-none flex-col overflow-hidden"
   >

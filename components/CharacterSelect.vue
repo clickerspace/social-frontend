@@ -35,7 +35,7 @@ const selectCharacter = (id: string) => {
 
 <template>
   <div
-    class="flex h-[100dvh] w-full flex-col items-center gap-5 bg-social-blue-600 bg-gradient-to-t from-[#31456f] to-social-blue-600 py-5"
+    class="flex h-[100dvh] w-full flex-col items-center justify-around gap-5 bg-[url('@/assets/img/character-select-bg.png')] bg-cover bg-center bg-no-repeat py-5"
   >
     <img
       src="/icons/social-clicker-logo.svg"

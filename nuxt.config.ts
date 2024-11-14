@@ -106,7 +106,6 @@ export default defineNuxtConfig({
     "@pinia-plugin-persistedstate/nuxt",
     "nuxt-marquee",
     "@nuxtjs/google-fonts",
-    "@nuxt/content",
     "@nuxtjs/i18n",
     "@nuxt/image",
   ],

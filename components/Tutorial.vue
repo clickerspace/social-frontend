@@ -8,25 +8,25 @@ const splideOptions = computed(() => ({
 }));
 const splideData = [
   {
-    img: "/avatar/avatar1.png",
+    img: "/img/slider1.png",
     title: "MENUS",
     description:
       "Complete tasks to gain SP and Power. Add friends from the Contacts section to earn more SP and Power, and request help from your friends through the Messages section.",
   },
   {
-    img: "/avatar/avatar1.png",
+    img: "/img/slider2.png",
     title: "POWER AND SOCIAL POINTS",
     description:
       "Your character uses energy to progress through the story. The choices you make earn you Social Points (SP). Power can be obtained by asking for help from friends or purchasing it from the market.",
   },
   {
-    img: "/avatar/avatar1.png",
+    img: "/img/slider3.png",
     title: "MARKET",
     description:
       "Users can purchase Energy Packs to refill their energy, SP Packages to earn Social Points (SP), and click on the Ad Pack to watch ads and gain both energy and SP.",
   },
   {
-    img: "/avatar/avatar1.png",
+    img: "/img/slider4.png",
     title: "STORY",
     description:
       "As long as you have energy, you will interact with the people around you and have conversations. Your choices during these interactions can earn or cost you Social Points (SP). Once you reach 100 SP, the game rewards you with 1 token.",
@@ -39,7 +39,7 @@ const splideOptionsRef = ref<object>(splideOptions);
     <SplideTrack>
       <SplideSlide v-for="item in splideData" :key="item.description">
         <div
-          class="grid h-[100dvh] grid-cols-1 bg-social-blue-600 bg-gradient-to-t from-[#31456f] to-social-blue-600 py-5"
+          class="grid h-[100dvh] grid-cols-1 bg-[url('@/assets/img/tutorial-bg.png')] bg-cover bg-center bg-no-repeat py-5"
         >
           <div class="flex w-full flex-col items-center gap-5">
             <img
@@ -47,15 +47,17 @@ const splideOptionsRef = ref<object>(splideOptions);
               alt="social-clicker-logo"
               class="w-48"
             />
-            <div class="w-36">
+            <div class="h-56 w-56">
               <img
                 :src="item.img"
                 alt="social-clicker-logo"
                 class="h-full w-full object-contain"
               />
             </div>
-            <h1 class="">{{ item.title }}</h1>
-            <p class="w-72 text-sm">{{ item.description }}</p>
+            <div class="flex w-full flex-col items-center gap-5">
+              <h1 class="">{{ item.title }}</h1>
+              <p class="w-72 text-sm">{{ item.description }}</p>
+            </div>
           </div>
         </div>
       </SplideSlide>
@@ -72,11 +74,22 @@ const splideOptionsRef = ref<object>(splideOptions);
       </button>
     </div>
   </Splide>
-  <button class="absolute right-2 top-2">
+  <button
+    class="absolute right-4 top-2 flex flex-col items-center rounded-md border border-white p-1 dark:border-white"
+  >
     <UIcon name="bx:bxs-chevrons-right" size="32" />
+    <span class="text-xs">SKIP</span>
   </button>
 </template>
 <style>
+.splide__pagination__page {
+  @apply h-[2px] w-2 rounded-none hover:bg-social-blue-600;
+}
+.splide__pagination__page.is-active {
+  @apply w-4 bg-social-blue-600;
+}
+</style>
+<style scoped>
 .splide__pagination__page {
   @apply h-[2px] w-2 rounded-none hover:bg-social-blue-600;
 }
