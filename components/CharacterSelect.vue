@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from "vue";
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/vue-splide";
 import "@splidejs/vue-splide/css/skyblue";
 
@@ -7,6 +8,7 @@ const splideOptions = computed(() => ({
   rewind: true,
   pagination: false,
 }));
+
 const splideData = [
   {
     img: "/character/character1.png",
@@ -25,8 +27,12 @@ const splideData = [
     characterId: "4",
   },
 ];
-const splideOptionsRef = ref<object>(splideOptions);
+
+const selectCharacter = (id: string) => {
+  console.log("object :>> ", id);
+};
 </script>
+
 <template>
   <div
     class="flex h-[100dvh] w-full flex-col items-center gap-5 bg-social-blue-600 bg-gradient-to-t from-[#31456f] to-social-blue-600 py-5"
@@ -36,16 +42,29 @@ const splideOptionsRef = ref<object>(splideOptions);
       alt="social-clicker-logo"
       class="w-48"
     />
-    <Splide :has-track="false" :options="splideOptionsRef">
+    <Splide :has-track="false" :options="splideOptions">
       <SplideTrack>
-        <SplideSlide v-for="item in splideData" :key="item.characterId">
+        <SplideSlide
+          v-for="(item, index) in splideData"
+          :key="item.characterId"
+        >
           <div class="flex w-full flex-col items-center gap-5">
-            <div class="max-h-80">
+            <div class="h-80 max-h-80">
               <img
                 :src="item.img"
-                alt="social-clicker-logo"
+                alt="character image"
                 class="max-h-80 w-full object-contain"
               />
+            </div>
+          </div>
+          <div class="grid grid-cols-1">
+            <div class="flex w-full justify-center">
+              <button
+                class="z-10 mt-5 flex h-12 w-56 items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
+                @click="selectCharacter(item.characterId)"
+              >
+                <span>SELECT</span>
+              </button>
             </div>
           </div>
         </SplideSlide>
@@ -59,18 +78,5 @@ const splideOptionsRef = ref<object>(splideOptions);
         </button>
       </div>
     </Splide>
-    <button
-      class="flex h-12 w-56 items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
-    >
-      <span>SELECT</span>
-    </button>
   </div>
 </template>
-<style>
-.splide__arrow--next {
-}
-.splide__arrow--prev {
-}
-.splide__arrows {
-}
-</style>
