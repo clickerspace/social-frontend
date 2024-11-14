@@ -35,6 +35,7 @@ export interface User {
   location: string;
   story: any;
   currentStory: string;
+  products: any[];
   // fx settings end
 }
 
@@ -79,6 +80,7 @@ export const userStore = defineStore("userStore", {
       location: "",
       currentStory: "",
       story: {},
+      products: [],
       // fx settings end
     };
   },
@@ -429,6 +431,26 @@ export const userStore = defineStore("userStore", {
         return result;
       } catch (error) {
         console.error("Get help requests failed:", error);
+        return false;
+      }
+    },
+    async getProducts() {
+      try {
+        const response = await cFetch(`/backend/transactions/get-products`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        this.products = result;
+        return result;
+      } catch (error) {
+        console.error("Get products failed:", error);
         return false;
       }
     },
