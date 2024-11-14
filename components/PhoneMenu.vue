@@ -20,7 +20,11 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
         "
         class="flex cursor-pointer flex-col items-center duration-300 hover:scale-110"
       >
-        <img :src="item.icon" :alt="item.label" class="h-full w-full" />
+        <img
+          :src="item.icon"
+          :alt="item.label"
+          class="h-full w-full rounded-[20px]"
+        />
         <span class="line-clamp-1 text-[10px] capitalize">
           {{
             item.label.length > 6 ? item.label.slice(0, 6) + "..." : item.label
