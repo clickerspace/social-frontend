@@ -86,6 +86,10 @@ onMounted(async () => {
               : userStore().removeFriend(item.id)
           "
         />
+        <Suspense>
+          <ContactsInfiniteScroll />
+          <template #fallback> Loading.. </template>
+        </Suspense>
       </div>
       <ContactsPhoneBox />
     </div>
