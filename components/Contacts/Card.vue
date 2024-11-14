@@ -30,7 +30,6 @@ const handleClick = () => {
 const handleClickForRed = () => {
   if (!clicked.value) {
     clicked.value = true;
-    emit("handleClick");
   }
   if (type === "friendRequest") {
     rejectFriendRequest(id.value);
