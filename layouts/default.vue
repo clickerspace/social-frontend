@@ -34,7 +34,7 @@ onMounted(() => {
   // starts loading page while loading screen is up
   setTimeout(() => {
     loadPage.value = true;
-  }, 500);
+  }, 4400);
 });
 </script>
 <template>
