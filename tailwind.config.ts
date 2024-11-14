@@ -51,6 +51,9 @@ export default <Partial<Config>>{
         "social-red": {
           "100": "#FF0048",
         },
+        "social-green": {
+          "100": "#59E784",
+        },
         "social-purple": {
           "100": "#9285AC",
           "200": "#2E245D",
