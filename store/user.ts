@@ -224,6 +224,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
+        this.searchedContact = [];
 
         return result;
       } catch (error) {
@@ -248,6 +249,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
+        await this.getFriends();
         return result;
       } catch (error) {
         console.error("Remove friend failed:", error);
@@ -319,6 +321,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
+        await this.getFriends();
         return result;
       } catch (error) {
         console.error("Help friend failed:", error);

@@ -64,10 +64,7 @@ onMounted(async () => {
 
         <ContactsCard
           v-for="item in searchedContact"
-          :key="item.name"
-          :avatar="item.avatar"
-          :name="item.name"
-          :buttonText="item.buttonText"
+          :item="item"
           @handle-click="
             item.buttonText === 'ADD'
               ? userStore().addFriend(item.id)
@@ -77,10 +74,7 @@ onMounted(async () => {
         <!-- TODO ADD A SEPERATOR BETWEEN SEARCHED AND CONTACTS -->
         <ContactsCard
           v-for="item in contacts"
-          :key="item.name"
-          :avatar="item.avatar"
-          :name="item.name"
-          :buttonText="item.buttonText"
+          :item="item"
           type="friendList"
           @handle-click="
             item.buttonText === 'ASK HELP'

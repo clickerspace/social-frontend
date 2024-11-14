@@ -1,19 +1,41 @@
 <script setup lang="ts">
+import { userStore } from "~/store/user";
+const { removeFriend, rejectFriendRequest, telegramId } = userStore();
 const emit = defineEmits(["handleClick"]);
 
 export interface Props {
-  avatar?: string;
-  buttonText?: string;
-  name?: string;
-  type?: string;
+  item: {
+    id: string;
+    name: string;
+    avatar: string;
+    buttonText: string;
+  };
+  type?: "friendRequest" | "friendList";
 }
-const { avatar, buttonText, name } = defineProps<Props>();
+const { type, item } = defineProps<Props>();
+
+const { name, avatar, buttonText, id } = toRefs(item);
 const clicked = ref(false);
 
 const handleClick = () => {
   if (!clicked.value) {
     clicked.value = true;
     emit("handleClick");
+  }
+
+  setTimeout(() => {
+    clicked.value = false;
+  }, 1000);
+};
+const handleClickForRed = () => {
+  if (!clicked.value) {
+    clicked.value = true;
+    emit("handleClick");
+  }
+  if (type === "friendRequest") {
+    rejectFriendRequest(id.value);
+  } else {
+    removeFriend(id.value);
   }
 
   setTimeout(() => {
@@ -33,7 +55,7 @@ const handleClick = () => {
         </div>
       </div>
       <button
-        @click="handleClick()"
+        @click="handleClickForRed()"
         v-if="type === 'friendRequest' || type === 'friendList'"
         class="flex w-20 items-center justify-center rounded-md bg-social-red-100 p-2"
       >

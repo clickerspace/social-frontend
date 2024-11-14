@@ -16,10 +16,7 @@ onMounted(async () => {
       >
         <ContactsCard
           v-for="item in friendshipRequests"
-          :key="item.name"
-          :avatar="item.avatar"
-          :name="item.name"
-          :buttonText="item.buttonText"
+          :item="item"
           type="friendRequest"
           @handle-click="
             item.buttonText === 'ADD'
@@ -29,10 +26,7 @@ onMounted(async () => {
         />
         <ContactsCard
           v-for="item in helpList"
-          :key="item.name + item.buttonText"
-          :avatar="item.avatar"
-          :name="item.name"
-          :buttonText="item.buttonText"
+          :item="item"
           @handle-click="userStore().sendHelp(item.id)"
         />
       </div>

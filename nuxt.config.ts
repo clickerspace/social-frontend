@@ -53,9 +53,6 @@ export default defineNuxtConfig({
     DISCORD_URL: process.env.DISCORD_URL,
     WORKER_API_KEY: process.env.WORKER_API_KEY,
     public: {
-      gtm: {
-        id: "GTM-PWNBKS8Q",
-      },
       TGA_TOKEN: process.env.NUXT_PUBLIC_TGA_TOKEN,
       RETURN_URL: process.env.NUXT_PUBLIC_RETURN_URL,
       NUXT_MODE: process.env.NUXT_PUBLIC_MODE,
