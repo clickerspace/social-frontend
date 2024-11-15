@@ -9,7 +9,7 @@ const startCredits = () => {
 </script>
 <template>
   <ModalsCredits v-model:is-open="credistModal" />
-  <PhoneLayout title="Tasks" @update:key="emit('update:key')">
+  <PhoneLayout title="Settings" @update:key="emit('update:key')">
     <button class="settings-button h-10">Tutorial</button>
     <button class="settings-button h-10" @click="startCredits()">
       Credits
