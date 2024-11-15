@@ -44,20 +44,39 @@ const isOpen = ref(false);
     <div
       class="hide-scrollbar flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
     >
-      <h1 class="font-bold text-white dark:text-white">{{ story?.key }}</h1>
+      <h1 v-if="!showOptions" class="font-bold text-white dark:text-white">
+        {{ story?.key }}
+      </h1>
+      <button
+        class="flex w-fit items-center justify-center gap-[3px] rounded-[10px] bg-white p-2.5 text-[#4891FF]"
+        @click="moveToNextAndShowOptions(false)"
+        v-else
+      >
+        <UIcon
+          class="flex-shrink-0"
+          name="material-symbols:arrow-back-ios "
+          size="20"
+        />
+        BACK
+        <!-- <UIcon class="flex-shrink-0" name="hugeicons:advertisement" size="20" /> -->
+      </button>
       <p class="overflow-y-auto">
         {{ showNext ? story?.next : story?.brief }}
       </p>
-      <div v-if="showOptions" v-for="options in story?.options">
-        <button
-          class="flex w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
-          @click="applySelectionAndContinueStory(options)"
-        >
-          <span class="">{{ options }}</span>
-          <UIcon name="material-symbols:arrow-forward-ios" size="20" />
-        </button>
-      </div>
-      <div class="flex w-full items-center justify-center gap-5">
+
+      <button
+        v-if="showOptions"
+        v-for="options in story?.options"
+        class="flex flex-shrink-0 items-center justify-center rounded-[10px] border-[1px] border-solid border-white p-2.5 font-inter text-base font-medium text-white"
+        @click="applySelectionAndContinueStory(options)"
+      >
+        {{ options }}
+      </button>
+
+      <div
+        v-if="!showOptions"
+        class="flex w-full items-center justify-center gap-5"
+      >
         <button
           class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border"
           :class="
