@@ -355,10 +355,14 @@ export const userStore = defineStore("userStore", {
         return false;
       }
     },
-    async friendRequests() {
+    async friendRequests(skip: number = 0, limit: number = 10) {
       try {
         const response = await cFetch(`/backend/friend/requests`, {
           method: "GET",
+          headers: {
+            skip: skip.toString(),
+            limit: limit.toString(),
+          },
         });
 
         if (!response.ok) {
@@ -382,10 +386,14 @@ export const userStore = defineStore("userStore", {
         return false;
       }
     },
-    async getFriends() {
+    async getFriends(skip: number = 0, limit: number = 10) {
       try {
         const response = await cFetch(`/backend/friend/list`, {
           method: "GET",
+          headers: {
+            skip: skip.toString(),
+            limit: limit.toString(),
+          },
         });
 
         if (!response.ok) {
@@ -414,10 +422,14 @@ export const userStore = defineStore("userStore", {
         return false;
       }
     },
-    async getHelpRequests() {
+    async getHelpRequests(skip: number = 0, limit: number = 10) {
       try {
         const response = await cFetch(`/backend/help/requests/get`, {
           method: "GET",
+          headers: {
+            skip: skip.toString(),
+            limit: limit.toString(),
+          },
         });
 
         if (!response.ok) {

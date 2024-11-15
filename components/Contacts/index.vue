@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "#build/imports";
 import { userStore } from "~/store/user";
+import { useInfiniteScroll } from "@vueuse/core";
 const { searchedContact, contacts } = storeToRefs(userStore());
 const emit = defineEmits(["update:key"]);
 
@@ -19,20 +20,34 @@ const searchFriend = async () => {
     clicked.value = false;
   }, 1000);
 };
-onMounted(async () => {
-  await userStore().getFriends();
-});
+
 onUnmounted(() => {
   searchedContact.value = [];
 });
+useInfiniteScroll(
+  list,
+  async () => {
+    await getOnScroll();
+  },
+  {
+    distance: 10,
+  },
+);
+const stopInfScroll = ref(false);
+const getOnScroll = async () => {
+  if (stopInfScroll.value) return;
+  const newItems = await userStore().getFriends(contacts.value.length);
+  if (newItems.length > 0) {
+    contacts.value.push(...newItems);
+  } else {
+    stopInfScroll.value = true;
+  }
+};
 </script>
 <template>
   <PhoneLayout title="Contacts" @update:key="emit('update:key')">
     <div class="flex h-full w-full flex-col justify-between pb-12">
-      <div
-        ref="list"
-        class="hide-scrollbar flex h-[calc(100dvh-260px)] flex-col gap-3 overflow-y-scroll"
-      >
+      <div class="hide-scrollbar flex h-[calc(100dvh-260px)] flex-col gap-3">
         <div
           class="inline-flex items-center justify-center rounded-[41px] border-[1px] border-[#737373] border-[solid] bg-[radial-gradient(169.72%_89.02%_at_80.91%_-10.53%,_rgba(102,_102,_102,_0.50)_0%,_rgba(67,_58,_74,_0.50)_100%)]"
         >
@@ -68,27 +83,30 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <ContactsCard
-          v-for="item in searchedContact"
-          :item="item"
-          @handle-click="
-            item.buttonText === 'ADD'
-              ? userStore().addFriend(item.id)
-              : userStore().askForHelp(item.id)
-          "
-        />
-        <!-- TODO ADD A SEPERATOR BETWEEN SEARCHED AND CONTACTS -->
-        <ContactsCard
-          v-for="item in contacts"
-          :item="item"
-          type="friendList"
-          @handle-click="
-            item.buttonText === 'ASK HELP'
-              ? userStore().askForHelp(item.id)
-              : userStore().removeFriend(item.id)
-          "
-        />
-        <ContactsInfiniteScroll />
+        <div ref="list" class="hide-scrollbar h-full overflow-y-scroll">
+          <ContactsCard
+            v-for="item in searchedContact"
+            :item="item"
+            :key="item.id"
+            @handle-click="
+              item.buttonText === 'ADD'
+                ? userStore().addFriend(item.id)
+                : userStore().askForHelp(item.id)
+            "
+          />
+          <!-- TODO ADD A SEPERATOR BETWEEN SEARCHED AND CONTACTS -->
+          <ContactsCard
+            v-for="item in contacts"
+            :item="item"
+            :key="item.id"
+            type="friendList"
+            @handle-click="
+              item.buttonText === 'ASK HELP'
+                ? userStore().askForHelp(item.id)
+                : userStore().removeFriend(item.id)
+            "
+          />
+        </div>
       </div>
       <ContactsPhoneBox />
     </div>
