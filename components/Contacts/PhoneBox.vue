@@ -52,7 +52,7 @@ const copyAdress = async () => {
         />
       </div>
       <span
-        class="flex w-full items-center justify-center rounded-md border border-white bg-[#BDBDBD] px-2 py-1 dark:border-white"
+        class="border-bg-#BDBDBD flex w-full items-center justify-center rounded-md border border-solid bg-[radial-gradient(169.72%_89.02%_at_80.91%_-10.53%,_rgba(255,_255,_255,_0.50)_0%,_rgba(175,_175,_175,_0.50)_100%)] px-2 py-1"
       >
         <span class="line-clamp-1">
           {{ telegramId }}
