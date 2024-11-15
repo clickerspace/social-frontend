@@ -52,10 +52,10 @@ const handleClickForRed = () => {
           <span class="font-sm font-semibold">{{ name }}</span>
         </div>
       </div>
-      <div class="flex items-center justify-end gap-2">
+      <div class="my-2 flex w-full justify-end gap-2">
         <button
           @click="handleClickForRed()"
-          class="flex w-16 items-center justify-center rounded-md bg-social-red-100 p-2"
+          class="flex w-12 items-center justify-center rounded-md bg-social-red-100 opacity-65"
         >
           <UIcon
             v-if="clicked2"
@@ -64,15 +64,19 @@ const handleClickForRed = () => {
           />
           <UIcon
             v-else-if="type === 'friendRequest'"
+            name="mdi:account-remove"
+            size="20"
+          />
+          <UIcon
+            v-else
             name="material-symbols:person-remove-rounded"
             size="20"
           />
-          <UIcon v-else name="mdi:account-remove" size="20" />
         </button>
         <button
           @click="handleClick()"
           v-if="buttonText"
-          class="inline-flex flex-shrink-0 items-center justify-end rounded-[6px] bg-[#7C6F88] p-2 font-[Inter] text-[12px] font-semibold text-[white]"
+          class="inline-flex items-center justify-center rounded-[6px] bg-[#7C6F88] px-3 font-[Inter] text-[12px] font-semibold text-[white]"
         >
           <UIcon
             v-if="clicked"
