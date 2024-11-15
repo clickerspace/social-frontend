@@ -2,6 +2,7 @@
 import { locations } from "~/utils/constants/locations";
 import { userStore } from "~/store/user";
 import { storeToRefs } from "#build/imports";
+import { modalStore } from "~/store/modalStore";
 const { location } = storeToRefs(userStore());
 const emit = defineEmits(["update:key"]);
 
@@ -12,6 +13,7 @@ const handleClick = async (key: string) => {
   }
   location.value = key;
   await userStore().getStory(key);
+  modalStore().closeMenuModal();
 };
 </script>
 <template>

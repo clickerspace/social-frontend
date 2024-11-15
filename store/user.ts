@@ -36,6 +36,7 @@ export interface User {
   story: any;
   currentStory: string;
   products: any[];
+  gameLoading: boolean;
   // fx settings end
 }
 
@@ -81,6 +82,7 @@ export const userStore = defineStore("userStore", {
       currentStory: "",
       story: {},
       products: [],
+      gameLoading: true,
       // fx settings end
     };
   },

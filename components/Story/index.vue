@@ -3,14 +3,16 @@ import { userStore } from "~/store/user";
 import { storeToRefs } from "#build/imports";
 import { modalStore } from "~/store/modalStore";
 import { locations } from "~/utils/constants/locations";
-const { story, location } = storeToRefs(userStore());
+import getKeyAndGiveRandomRelatedImg from "~/utils/helpers/gameBgImgs";
+import type { LocationKey } from "~/utils/helpers/gameBgImgs";
+const { story, location, gameLoading } = storeToRefs(userStore());
+
 const emit = defineEmits(["mounted"]);
 onMounted(() => {
   nextTick(() => {
     emit("mounted");
   });
 });
-const bg = ref('bg-[url("@/assets/img/game-bg.png")]');
 
 const { DISABLED_BACKEND } = useRuntimeConfig().public;
 
@@ -96,6 +98,9 @@ const moveToNextAndShowOptions = async (value: boolean) => {
 
 onMounted(async () => {
   await userStore().getStory();
+
+  gameLoading.value = false;
+
   storySplitted.value = splitTextIntoMaxCharsArray(
     story.value.brief,
     CHAR_COUNT,
@@ -110,12 +115,16 @@ const isOpen = ref(false);
 </script>
 <template>
   <div
-    class="flex h-[calc(100dvh+1px)] w-full select-none items-end bg-cover bg-center bg-no-repeat"
-    :class="bg"
+    v-if="!gameLoading"
+    class="flex h-[calc(100dvh+1px)] w-full select-none items-end"
   >
+    <img
+      :src="getKeyAndGiveRandomRelatedImg(location as LocationKey)"
+      class="absolute inset-0 z-0 h-full w-full object-cover"
+    />
     <ModalsNoEnergy v-model:is-open="isOpen" />
     <div
-      class="hide-scrollbar flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
+      class="hide-scrollbar z-10 flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
     >
       <h1 v-if="!showOptions" class="font-bold text-white dark:text-white">
         {{ locations.find((loc) => loc.key === location)?.name }}

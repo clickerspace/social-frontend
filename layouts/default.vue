@@ -7,7 +7,7 @@ import { initMiniApp } from "@telegram-apps/sdk";
 const [miniApp] = initMiniApp();
 const initDataApp = initInitData();
 
-const { loading } = storeToRefs(userStore());
+const { loading, gameLoading } = storeToRefs(userStore());
 
 const loadPage = ref(false);
 const loadingHere = ref(true);
@@ -40,7 +40,7 @@ onMounted(() => {
 <template>
   <transition name="fade">
     <div
-      v-if="loading"
+      v-if="loading || gameLoading"
       class="bg-primary-800 absolute inset-0 z-50 flex h-[calc(100dvh+1px)] flex-col items-center justify-around bg-cover bg-center bg-no-repeat"
     >
       <Loading />
