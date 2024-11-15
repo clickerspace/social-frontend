@@ -3,12 +3,14 @@ import { defineStore } from "pinia";
 interface ModalState {
   isModalOpen: boolean;
   activeKey?: string;
+  tutorialModal: boolean;
 }
 export const modalStore = defineStore("modalStore", {
   state: (): ModalState => {
     return {
       isModalOpen: false,
       activeKey: "menu",
+      tutorialModal: false,
     };
   },
   actions: {
@@ -22,6 +24,9 @@ export const modalStore = defineStore("modalStore", {
     closeMenuModal() {
       this.isModalOpen = false;
       this.activeKey = "menu";
+    },
+    setTutorialModal(value: boolean) {
+      this.tutorialModal = value;
     },
   },
 });

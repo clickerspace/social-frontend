@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { modalStore } from "~/store/modalStore";
 const emit = defineEmits(["update:key"]);
 
 const credistModal = ref(false);

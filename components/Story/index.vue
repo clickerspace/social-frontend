@@ -2,7 +2,8 @@
 import { userStore } from "~/store/user";
 import { storeToRefs } from "#build/imports";
 import { modalStore } from "~/store/modalStore";
-const { story } = storeToRefs(userStore());
+import { locations } from "~/utils/constants/locations";
+const { story, location } = storeToRefs(userStore());
 const emit = defineEmits(["mounted"]);
 onMounted(() => {
   nextTick(() => {
@@ -12,27 +13,99 @@ onMounted(() => {
 const bg = ref('bg-[url("@/assets/img/game-bg.png")]');
 
 const { DISABLED_BACKEND } = useRuntimeConfig().public;
+
+const storySplitted = ref([""]);
+const splitTextIntoMaxCharsArray = (text: string, maxChars: number) => {
+  const lines: string[] = [];
+  let startIndex = 0;
+
+  while (startIndex < text.length) {
+    let endIndex = startIndex + maxChars;
+
+    // Ensure endIndex does not exceed text length
+    if (endIndex >= text.length) {
+      lines.push(text.slice(startIndex).trim());
+      break;
+    }
+
+    // Look for the nearest period before or after maxChars
+    const nextDotIndex = text.indexOf(".", endIndex);
+    const prevDotIndex = text.lastIndexOf(".", endIndex);
+
+    if (
+      prevDotIndex > startIndex &&
+      (nextDotIndex === -1 ||
+        endIndex - prevDotIndex <= nextDotIndex - endIndex)
+    ) {
+      // If there's a period before endIndex and it's closer than the one after
+      endIndex = prevDotIndex + 1;
+    } else if (nextDotIndex !== -1) {
+      // Otherwise, take the next period after endIndex
+      endIndex = nextDotIndex + 1;
+    }
+
+    // Add the trimmed chunk to the lines array
+    lines.push(text.slice(startIndex, endIndex).trim());
+
+    // Move startIndex to the next position after the period
+    startIndex = endIndex;
+  }
+
+  return lines;
+};
+
+const CHAR_COUNT = 200;
 const applySelectionAndContinueStory = async (selection: string) => {
   story.value = await userStore().continueStory(
     story.value.brief,
     story.value.next,
     selection,
   );
-  console.log(story.value);
+  storySplitted.value = splitTextIntoMaxCharsArray(
+    story.value.brief,
+    CHAR_COUNT,
+  );
+  storySplitted.value = [
+    ...storySplitted.value,
+    ...splitTextIntoMaxCharsArray(story.value.next, CHAR_COUNT),
+  ];
+
   showOptions.value = false;
-  showNext.value = false;
+  activeIndex.value = 0;
   console.log(story.value);
 };
+
 const showNext = ref(false);
 const showOptions = ref(false);
 const moveToNextAndShowOptions = async (value: boolean) => {
-  showNext.value = value;
-  showOptions.value = value;
+  if (value) {
+    activeIndex.value = Math.min(
+      activeIndex.value + 1,
+      storySplitted.value.length - 1,
+    );
+    if (activeIndex.value === storySplitted.value.length - 1) {
+      showOptions.value = true;
+    }
+  } else {
+    activeIndex.value = Math.max(activeIndex.value - 1, 0);
+    if (activeIndex.value <= storySplitted.value.length - 1) {
+      showOptions.value = false;
+    }
+  }
 };
 
 onMounted(async () => {
   await userStore().getStory();
+  storySplitted.value = splitTextIntoMaxCharsArray(
+    story.value.brief,
+    CHAR_COUNT,
+  );
+  storySplitted.value = [
+    ...storySplitted.value,
+    ...splitTextIntoMaxCharsArray(story.value.next, CHAR_COUNT),
+  ];
 });
+const activeIndex = ref(0);
 const isOpen = ref(false);
 </script>
 <template>
@@ -45,7 +118,7 @@ const isOpen = ref(false);
       class="hide-scrollbar flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
     >
       <h1 v-if="!showOptions" class="font-bold text-white dark:text-white">
-        {{ story?.key }}
+        {{ locations.find((loc) => loc.key === location)?.name }}
       </h1>
       <button
         class="flex w-fit items-center justify-center gap-[3px] rounded-[10px] bg-white p-2.5 text-[#4891FF]"
@@ -61,7 +134,7 @@ const isOpen = ref(false);
         <!-- <UIcon class="flex-shrink-0" name="hugeicons:advertisement" size="20" /> -->
       </button>
       <p class="overflow-y-auto">
-        {{ showNext ? story?.next : story?.brief }}
+        {{ storySplitted[activeIndex] }}
       </p>
 
       <button

@@ -124,6 +124,7 @@ export const userStore = defineStore("userStore", {
         const { result, user } = await response.json();
         this.story = result;
         this.currentStory = result.storyId;
+        this.location = result.key;
         this.assignUserData(user);
         return result;
       } catch (error) {
@@ -404,6 +405,7 @@ export const userStore = defineStore("userStore", {
             id: item.id,
           }),
         );
+
         return result;
       } catch (error) {
         console.error("Get friends failed:", error);
