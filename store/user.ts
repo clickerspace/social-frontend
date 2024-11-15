@@ -473,6 +473,30 @@ export const userStore = defineStore("userStore", {
         return false;
       }
     },
+    async createTransaction(productId: string) {
+      try {
+        const response = await cFetch(`/backend/transactions/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            productId: productId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        console.log("Create transaction response:", result);
+        return result;
+      } catch (error) {
+        console.error("Create transaction failed:", error);
+        return false;
+      }
+    },
     setDayEnd(time: number) {
       this.dayEnd = time;
     },

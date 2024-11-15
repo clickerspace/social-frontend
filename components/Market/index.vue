@@ -1,14 +1,41 @@
 <script setup lang="ts">
-const emit = defineEmits(["update:key"]);
 import { userStore } from "~/store/user";
 import { storeToRefs } from "#build/imports";
+import { initUtils } from "@telegram-apps/sdk";
+const emit = defineEmits(["update:key"]);
 const { products: marketItems } = storeToRefs(userStore());
-
+const utils = initUtils();
 const clicked = ref(false);
-const handleClick = () => {
+const handleClick = async (productId: string) => {
   if (!clicked.value) {
     clicked.value = true;
   }
+  const result = await userStore().createTransaction(productId);
+  // send data to aeon v2
+  const url = "https://sbx-crypto-payment-api.aeon.xyz/open/api/tg/payment/V2";
+  const url2 = "https://crypto-payment-api.aeon.xyz/open/api/tg/payment/V2";
+  const resultAeon = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(result.transactionDataAeon),
+  });
+  if (!resultAeon.ok) {
+    console.error("Error sending data to Aeon V2");
+    return;
+  }
+  const data = await resultAeon.json();
+  if (data.msg === "success") {
+    utils.openLink(data.model.webUrl, {
+      tryInstantView: true,
+      tryBrowser: true,
+    });
+  }
+
+  setTimeout(() => {
+    clicked.value = false;
+  }, 500);
 };
 onMounted(async () => {
   await userStore().getProducts();
@@ -21,7 +48,7 @@ onMounted(async () => {
       :class="clicked ? 'radial-bg-disabled' : 'radial-bg'"
       v-for="item in marketItems"
       :key="item?.name"
-      @click="handleClick()"
+      @click="handleClick(item?.id)"
     >
       <div class="flex items-center gap-2">
         <UIcon :name="item?.icon" size="42" class="text-social-purple-100" />
