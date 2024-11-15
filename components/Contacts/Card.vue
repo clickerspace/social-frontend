@@ -16,6 +16,7 @@ const { type, item } = defineProps<Props>();
 
 const { name, avatar, buttonText, id } = toRefs(item);
 const clicked = ref(false);
+const clicked2 = ref(false);
 
 const handleClick = () => {
   if (!clicked.value) {
@@ -28,8 +29,8 @@ const handleClick = () => {
   }, 1000);
 };
 const handleClickForRed = () => {
-  if (!clicked.value) {
-    clicked.value = true;
+  if (!clicked2.value) {
+    clicked2.value = true;
   }
   if (type === "friendRequest") {
     rejectFriendRequest(id.value);
@@ -38,7 +39,7 @@ const handleClickForRed = () => {
   }
 
   setTimeout(() => {
-    clicked.value = false;
+    clicked2.value = false;
   }, 1000);
 };
 </script>
@@ -54,11 +55,10 @@ const handleClickForRed = () => {
       <div class="flex items-center justify-end gap-2">
         <button
           @click="handleClickForRed()"
-          v-if="type === 'friendRequest' || type === 'friendList'"
           class="flex w-16 items-center justify-center rounded-md bg-social-red-100 p-2"
         >
           <UIcon
-            v-if="clicked"
+            v-if="clicked2"
             name="svg-spinners:180-ring-with-bg"
             size="20"
           />

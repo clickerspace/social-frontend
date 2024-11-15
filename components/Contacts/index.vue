@@ -22,6 +22,9 @@ const searchFriend = async () => {
 onMounted(async () => {
   await userStore().getFriends();
 });
+onUnmounted(() => {
+  searchedContact.value = [];
+});
 </script>
 <template>
   <PhoneLayout title="Contacts" @update:key="emit('update:key')">
