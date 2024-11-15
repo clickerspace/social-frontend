@@ -54,8 +54,9 @@ const handleClickForRed = () => {
       </div>
       <div class="my-2 flex w-full justify-end gap-2">
         <button
+          v-if="type"
           @click="handleClickForRed()"
-          class="flex w-12 items-center justify-center rounded-md bg-social-red-100 opacity-65"
+          class="flex min-h-8 w-12 items-center justify-center rounded-md bg-social-red-100 opacity-65"
         >
           <UIcon
             v-if="clicked2"
