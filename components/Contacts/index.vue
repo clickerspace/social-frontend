@@ -30,11 +30,13 @@ onMounted(async () => {
         ref="list"
         class="hide-scrollbar flex h-[calc(100dvh-260px)] flex-col gap-3 overflow-y-scroll"
       >
-        <div class="flex items-center gap-3">
+        <div
+          class="inline-flex items-center justify-center rounded-[41px] border-[1px] border-[#737373] border-[solid] bg-[radial-gradient(169.72%_89.02%_at_80.91%_-10.53%,_rgba(102,_102,_102,_0.50)_0%,_rgba(67,_58,_74,_0.50)_100%)]"
+        >
           <UInput
             :ui="{
               rounded: '!rounded-full',
-              base: 'h-12 radial-bg !border !border-[#737373] !bg-transparent !ring-0  ',
+              base: ' !text-white h-12 !bg-transparent !ring-0  ',
               placeholder:
                 'placeholder:text-[#A3A3A3] dark:placeholder:text-[#A3A3A3]',
               icon: {
@@ -45,12 +47,13 @@ onMounted(async () => {
             v-model="tgId"
             placeholder="Add Phone Number"
             icon="material-symbols:call"
+            iconposition="right"
             class="w-full"
           />
 
           <button
             @click="!clicked ? searchFriend() : null"
-            class="flex h-12 w-16 items-center justify-center rounded-md bg-social-purple-200"
+            class="flex h-12 w-16 items-center justify-center rounded-md"
           >
             <UIcon
               v-if="clicked"
