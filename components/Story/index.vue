@@ -67,7 +67,7 @@ const applySelectionAndContinueStory = async (selection: string) => {
   );
   storySplitted.value = [
     ...storySplitted.value,
-    ...splitTextIntoMaxCharsArray(story.value.next, CHAR_COUNT),
+    ...splitTextIntoMaxCharsArray(story.value?.next || "", CHAR_COUNT),
   ];
 
   showOptions.value = false;
