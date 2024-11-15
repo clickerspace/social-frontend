@@ -7,7 +7,7 @@ const { isModalOpen } = storeToRefs(modalStore());
 console.log(socialPoints.value);
 </script>
 <template>
-  <div class="flex h-12 w-full items-center justify-between px-5">
+  <div class="z-20 flex h-12 w-full items-center justify-between px-5">
     <ModalsMenu v-model:isOpen="isModalOpen" />
     <div
       class="flex cursor-pointer items-center justify-center rounded-lg bg-social-yellow-100 p-1"
