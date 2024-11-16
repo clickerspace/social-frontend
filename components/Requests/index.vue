@@ -21,7 +21,6 @@ const getOnScroll = async () => {
   if (switchToHelpRequests.value) {
     const newItems = await userStore().getHelpRequests(helpList.value.length);
     if (newItems.length > 0) {
-      helpList.value.push(...newItems);
     } else {
       stopInf.value = true;
     }

@@ -482,7 +482,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
-        this.helpList = result.map(
+        const mappedResults = result.map(
           (item: { helped: { username: string; id: string } }) => ({
             name: item.helped.username,
             avatar: "/avatar/avatar2.png",
@@ -490,7 +490,11 @@ export const userStore = defineStore("userStore", {
             id: item.helped.id,
           }),
         );
-        return result;
+        if (mappedResults.length !== 0) {
+          this.helpList = [...this.helpList, ...mappedResults];
+        }
+
+        return mappedResults;
       } catch (error) {
         console.error("Get help requests failed:", error);
         return false;
