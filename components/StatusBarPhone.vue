@@ -4,8 +4,7 @@ import { storeToRefs } from "#build/imports";
 import { userStore } from "~/store/user";
 import { modalStore } from "~/store/modalStore";
 
-const { energy, socialPoints } = storeToRefs(userStore());
-const localTime = useLocalTime();
+const { energy, socialPoints, localTime } = storeToRefs(userStore());
 </script>
 <template>
   <div class="flex w-full items-center justify-between px-6 pt-2">

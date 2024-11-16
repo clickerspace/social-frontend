@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useLocalTime } from "~/utils/helpers/useLocalTime";
+import { userStore } from "~/store/user";
+import { storeToRefs } from "pinia";
 
-const localTime = useLocalTime();
+const { localTime } = storeToRefs(userStore());
 </script>
 <template>
   <PhoneLayout>

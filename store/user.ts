@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
 import { cFetch } from "~/utils/helpers/cFetch";
+import { useLocalTime } from "~/utils/helpers/useLocalTime";
 
 export interface User {
   name: string;
@@ -23,7 +24,7 @@ export interface User {
   musicLevel: number;
   musicOn: boolean;
   soundFxLevel: number;
-
+  localTime: ReturnType<typeof useLocalTime>;
   soundFxOn: boolean;
   vibration: boolean;
   energy: number;
@@ -68,7 +69,7 @@ export const userStore = defineStore("userStore", {
       loading: true,
 
       version: "0.0.0",
-
+      localTime: useLocalTime(),
       connected: false,
 
       walletAddress: "",
