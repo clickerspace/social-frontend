@@ -82,7 +82,10 @@ const getOnScroll = async () => {
           </button>
         </div>
 
-        <div ref="list" class="hide-scrollbar h-full overflow-y-scroll">
+        <div
+          ref="list"
+          class="hide-scrollbar flex h-full flex-col gap-3 overflow-y-scroll"
+        >
           <ContactsCard
             v-for="item in searchedContact"
             :item="item"
