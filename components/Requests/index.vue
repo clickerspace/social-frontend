@@ -31,7 +31,6 @@ const getOnScroll = async () => {
     );
 
     if (newItems.length > 0) {
-      friendshipRequests.value.push(...newItems);
     } else {
       switchToHelpRequests.value = true;
     }

@@ -38,7 +38,6 @@ const getOnScroll = async () => {
   if (stopInfScroll.value) return;
   const newItems = await userStore().getFriends(contacts.value.length);
   if (newItems.length > 0) {
-    contacts.value.push(...newItems);
   } else {
     stopInfScroll.value = true;
   }
