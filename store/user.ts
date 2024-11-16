@@ -39,6 +39,8 @@ export interface User {
   products: any[];
   gameLoading: boolean;
   selectedCharacter: string;
+  otherCharacters: string[];
+  storyLocation: string;
   // fx settings end
 }
 
@@ -86,6 +88,8 @@ export const userStore = defineStore("userStore", {
       products: [],
       gameLoading: true,
       selectedCharacter: "",
+      otherCharacters: [],
+      storyLocation: "",
       // fx settings end
     };
   },
@@ -129,7 +133,8 @@ export const userStore = defineStore("userStore", {
         const { result, user } = await response.json();
         this.story = result;
         this.currentStory = result.storyId;
-        this.location = result.key;
+        this.location = result.location;
+        this.otherCharacters = result.characters;
         this.assignUserData(user);
         return result;
       } catch (error) {
@@ -161,6 +166,8 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
+        this.otherCharacters = result.response.usedCharacters;
+        this.location = result.response.usedLocation;
         console.log("Continue Story response:", result);
         return result.response;
       } catch (error) {

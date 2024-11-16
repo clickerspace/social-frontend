@@ -98,6 +98,10 @@ const getKeyAndGiveRandomRelatedCharacterImg = (key: CharacterKeys) => {
     victor: [victor1, victor2],
     yohanna: [yohanna1, yohanna2],
   };
-  return keyAndImgs[key][Math.floor(Math.random() * keyAndImgs[key].length)];
+  return keyAndImgs[key.toLowerCase() as CharacterKeys][
+    Math.floor(
+      Math.random() * keyAndImgs[key.toLowerCase() as CharacterKeys].length,
+    )
+  ];
 };
 export default getKeyAndGiveRandomRelatedCharacterImg;

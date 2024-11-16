@@ -142,7 +142,24 @@ const isOpen = ref(false);
           userStore().selectedCharacter as CharacterKeys,
         )
       "
-      class="absolute bottom-0 left-0 z-10 h-[75%] w-auto object-contain"
+      class="absolute -left-10 bottom-0 z-10 h-[75%] w-auto object-contain"
+    />
+    <img
+      v-for="(otherCharacter, i) in userStore().otherCharacters"
+      alt="other characters"
+      :src="
+        getKeyAndGiveRandomRelatedCharacterImg(otherCharacter as CharacterKeys)
+      "
+      :key="i"
+      :class="[
+        'absolute bottom-0 z-10 h-[75%] w-auto object-contain',
+        {
+          '-right-10': i === 0,
+          'right-[10%]': i === 1,
+          'right-[30%]': i === 2,
+          'right-[50%]': i === 3,
+        },
+      ]"
     />
     <div
       class="hide-scrollbar z-10 flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
@@ -194,9 +211,9 @@ const isOpen = ref(false);
         <button
           class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border"
           :class="
-            true
+            activeIndex === 0
               ? 'border-[#999999] text-[#999999]'
-              : 'border-white text-white dark:border-white dark:text-white'
+              : 'border-social-blue-300 bg-white text-social-blue-300 dark:text-social-blue-300'
           "
           @click="
             story?.next
