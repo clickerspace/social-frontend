@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { modalStore } from "~/store/modalStore";
 
 const texts = [
   "Every decision you make will change the course of the story.",
@@ -45,6 +46,12 @@ onMounted(() => {
     </div>
     <button
       class="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
+      @click="
+        () => {
+          modalStore().setCharacterSelectModal(true);
+          modalStore().setSplashModal(false);
+        }
+      "
     >
       <span>START</span>
     </button>

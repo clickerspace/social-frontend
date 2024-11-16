@@ -4,6 +4,8 @@ interface ModalState {
   isModalOpen: boolean;
   activeKey?: string;
   tutorialModal: boolean;
+  splashModal: boolean;
+  characterSelectModal: boolean;
 }
 export const modalStore = defineStore("modalStore", {
   state: (): ModalState => {
@@ -11,6 +13,8 @@ export const modalStore = defineStore("modalStore", {
       isModalOpen: false,
       activeKey: "menu",
       tutorialModal: false,
+      splashModal: false,
+      characterSelectModal: false,
     };
   },
   actions: {
@@ -27,6 +31,12 @@ export const modalStore = defineStore("modalStore", {
     },
     setTutorialModal(value: boolean) {
       this.tutorialModal = value;
+    },
+    setSplashModal(value: boolean) {
+      this.splashModal = value;
+    },
+    setCharacterSelectModal(value: boolean) {
+      this.characterSelectModal = value;
     },
   },
 });

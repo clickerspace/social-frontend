@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/vue-splide";
 import "@splidejs/vue-splide/css/skyblue";
+import { modalStore } from "~/store/modalStore";
 
 const splideOptions = computed(() => ({
-  type: "loop",
   rewind: true,
 }));
 const splideData = [
@@ -35,7 +35,7 @@ const splideData = [
 const splideOptionsRef = ref<object>(splideOptions);
 </script>
 <template>
-  <Splide :has-track="false" :options="splideOptionsRef">
+  <Splide :has-track="false" :options="splideOptionsRef" ref="splide">
     <SplideTrack>
       <SplideSlide v-for="item in splideData" :key="item.description">
         <div
@@ -76,9 +76,10 @@ const splideOptionsRef = ref<object>(splideOptions);
   </Splide>
   <button
     class="absolute right-4 top-2 flex flex-col items-center rounded-md border border-white p-1 dark:border-white"
+    @click="modalStore().setTutorialModal(false)"
   >
     <UIcon name="bx:bxs-chevrons-right" size="32" />
-    <span class="text-xs">SKIP</span>
+    <span class="text-xs">CLOSE</span>
   </button>
 </template>
 <style>

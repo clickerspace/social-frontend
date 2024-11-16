@@ -31,12 +31,14 @@ export interface User {
   friendshipRequests: any[];
   searchedContact: any;
   contacts: any[];
+  showTutorial: boolean;
   helpList: any[];
   location: string;
   story: any;
   currentStory: string;
   products: any[];
   gameLoading: boolean;
+  selectedCharacter: string;
   // fx settings end
 }
 
@@ -48,7 +50,7 @@ export const userStore = defineStore("userStore", {
       expire: null,
       socialPoints: 0,
       energy: 0,
-
+      showTutorial: false,
       telegramId: "",
 
       userId: "",
@@ -83,6 +85,7 @@ export const userStore = defineStore("userStore", {
       story: {},
       products: [],
       gameLoading: true,
+      selectedCharacter: "",
       // fx settings end
     };
   },
@@ -174,10 +177,12 @@ export const userStore = defineStore("userStore", {
       this.energy = gameUser?.energy;
       this.socialPoints = gameUser?.socialPoint;
       this.cryptoToken = gameUser?.tokens;
+      this.showTutorial = gameUser?.showTutorial;
       // THOSE INDEX MAY CHANGE IF ERROR CHECK
       this.withdrawableTokens = gameUser?.withdrawable_tokens?.toFixed(2) || 0;
       this.updateTime = gameUser?.updatedAt;
       this.gameId = gameUser.id;
+      this.selectedCharacter = gameUser?.selectedCharacter || "david";
 
       //   this.errorState = "false";
     },
@@ -494,6 +499,30 @@ export const userStore = defineStore("userStore", {
         return result;
       } catch (error) {
         console.error("Create transaction failed:", error);
+        return false;
+      }
+    },
+    async setSelectedCharacter(character: string) {
+      try {
+        const response = await cFetch(`/backend/set-character`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            character,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        console.log("Set character response:", result);
+        return result;
+      } catch (error) {
+        console.error("Set character failed:", error);
         return false;
       }
     },

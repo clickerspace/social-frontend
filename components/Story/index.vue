@@ -5,8 +5,11 @@ import { modalStore } from "~/store/modalStore";
 import { locations } from "~/utils/constants/locations";
 import getKeyAndGiveRandomRelatedImg from "~/utils/helpers/gameBgImgs";
 import type { LocationKey } from "~/utils/helpers/gameBgImgs";
-const { story, location, gameLoading } = storeToRefs(userStore());
-
+import getKeyAndGiveRandomRelatedCharacterImg, {
+  type CharacterKeys,
+} from "~/utils/helpers/characterImgs";
+const { story, location, gameLoading, showTutorial } = storeToRefs(userStore());
+const { tutorialModal } = storeToRefs(modalStore());
 const emit = defineEmits(["mounted"]);
 onMounted(() => {
   nextTick(() => {
@@ -57,12 +60,15 @@ const splitTextIntoMaxCharsArray = (text: string, maxChars: number) => {
 };
 
 const CHAR_COUNT = 200;
+const loadingStory = ref(false);
 const applySelectionAndContinueStory = async (selection: string) => {
+  loadingStory.value = true;
   story.value = await userStore().continueStory(
     story.value.brief,
     story.value.next,
     selection,
   );
+
   storySplitted.value = splitTextIntoMaxCharsArray(
     story.value.brief,
     CHAR_COUNT,
@@ -75,6 +81,7 @@ const applySelectionAndContinueStory = async (selection: string) => {
   showOptions.value = false;
   activeIndex.value = 0;
   console.log(story.value);
+  loadingStory.value = false;
 };
 
 const showNext = ref(false);
@@ -109,6 +116,9 @@ onMounted(async () => {
     ...storySplitted.value,
     ...splitTextIntoMaxCharsArray(story.value.next, CHAR_COUNT),
   ];
+  if (showTutorial.value) {
+    modalStore().setSplashModal(true);
+  }
 });
 const activeIndex = ref(0);
 const isOpen = ref(false);
@@ -123,12 +133,24 @@ const isOpen = ref(false);
       class="absolute inset-0 z-0 h-full w-full object-cover"
     />
     <ModalsNoEnergy v-model:is-open="isOpen" />
+    <ModalsTutorial />
+    <ModalsSplash />
+    <ModalsCharacterSelect />
+    <img
+      :src="
+        getKeyAndGiveRandomRelatedCharacterImg(
+          userStore().selectedCharacter as CharacterKeys,
+        )
+      "
+      class="absolute bottom-0 left-0 z-10 h-[75%] w-auto object-contain"
+    />
     <div
       class="hide-scrollbar z-10 flex max-h-[80%] w-full flex-col gap-5 bg-gradient-to-t from-[#6ec1eb70] from-10% via-[#37679280] via-80% to-[#323c6600] p-5"
     >
       <h1 v-if="!showOptions" class="font-bold text-white dark:text-white">
         {{ locations.find((loc) => loc.key === location)?.name }}
       </h1>
+
       <button
         class="flex w-fit items-center justify-center gap-[3px] rounded-[10px] bg-white p-2.5 text-[#4891FF]"
         @click="moveToNextAndShowOptions(false)"
@@ -147,13 +169,23 @@ const isOpen = ref(false);
       </p>
 
       <button
-        v-if="showOptions"
+        v-if="showOptions && !loadingStory"
         v-for="options in story?.options"
         class="flex flex-shrink-0 items-center justify-center rounded-[10px] border-[1px] border-solid border-white p-2.5 font-inter text-base font-medium text-white"
         @click="applySelectionAndContinueStory(options)"
       >
         {{ options }}
       </button>
+      <div
+        v-else-if="loadingStory"
+        class="my-5 flex items-center justify-center"
+      >
+        <UIcon
+          name="eos-icons:three-dots-loading"
+          size="64"
+          class="text-white dark:text-white"
+        />
+      </div>
 
       <div
         v-if="!showOptions"
