@@ -406,7 +406,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
-        this.friendshipRequests = result.map(
+        const mappedResults = result.map(
           (item: { initiator: { username: string; id: string } }) => ({
             name: item.initiator.username,
             avatar: "/avatar/avatar2.png",
@@ -414,6 +414,12 @@ export const userStore = defineStore("userStore", {
             id: item.initiator.id,
           }),
         );
+        if (mappedResults.length !== 0) {
+          this.friendshipRequests = [
+            ...this.friendshipRequests,
+            ...mappedResults,
+          ];
+        }
         return result;
       } catch (error) {
         console.error("Friend requests failed:", error);
@@ -437,7 +443,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
-        this.contacts = result.map(
+        const mappedResults = result.map(
           (item: {
             username: string;
             id: string;
@@ -449,8 +455,11 @@ export const userStore = defineStore("userStore", {
             id: item.id,
           }),
         );
+        if (mappedResults.length !== 0) {
+          this.contacts = [...this.contacts, ...mappedResults];
+        }
 
-        return result;
+        return mappedResults;
       } catch (error) {
         console.error("Get friends failed:", error);
         return false;
