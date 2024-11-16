@@ -420,7 +420,7 @@ export const userStore = defineStore("userStore", {
             ...mappedResults,
           ];
         }
-        return result;
+        return mappedResults;
       } catch (error) {
         console.error("Friend requests failed:", error);
         return false;
