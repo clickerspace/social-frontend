@@ -41,6 +41,7 @@ export interface User {
   selectedCharacter: string;
   otherCharacters: string[];
   storyLocation: string;
+  firstLogin: boolean;
   // fx settings end
 }
 
@@ -90,6 +91,7 @@ export const userStore = defineStore("userStore", {
       selectedCharacter: "",
       otherCharacters: [],
       storyLocation: "",
+      firstLogin: false,
       // fx settings end
     };
   },
@@ -109,6 +111,7 @@ export const userStore = defineStore("userStore", {
         const data = await response.json();
         this.assignUserData(data);
         console.log("Login response:", data);
+        this.firstLogin = data.firstLogin;
         return true;
       } catch (error) {
         console.error("Login failed:", error);
