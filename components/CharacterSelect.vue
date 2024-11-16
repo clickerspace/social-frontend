@@ -7,11 +7,19 @@ import { userStore } from "~/store/user";
 import { splideCharacterData } from "~/utils/helpers/characterImgs";
 
 const splideOptions = computed(() => ({
-  type: "loop",
-  rewind: true,
   pagination: false,
 }));
-
+const currentIndex = ref(0);
+const onNext = () => {
+  if (currentIndex.value < splideData.length - 1) {
+    currentIndex.value++;
+  }
+};
+const onPrev = () => {
+  if (currentIndex.value > 0) {
+    currentIndex.value--;
+  }
+};
 const splideData = splideCharacterData;
 
 const selectCharacter = (key: string) => {
@@ -44,18 +52,18 @@ const selectCharacter = (key: string) => {
               />
             </div>
           </div>
-          <div class="grid grid-cols-1">
-            <div class="flex w-full justify-center">
-              <button
-                class="z-10 mt-5 flex h-12 w-56 items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
-                @click="selectCharacter(item.key)"
-              >
-                <span>SELECT</span>
-              </button>
-            </div>
-          </div>
         </SplideSlide>
       </SplideTrack>
+      <div class="grid grid-cols-1">
+        <div class="flex w-full justify-center">
+          <button
+            class="z-10 mt-5 flex h-12 w-56 items-center justify-center gap-2 rounded-[10px] border border-social-blue-300 bg-white text-social-blue-300"
+            @click="selectCharacter(splideData[currentIndex].key)"
+          >
+            <span>SELECT</span>
+          </button>
+        </div>
+      </div>
       <div class="splide__arrows">
         <button class="splide__arrow splide__arrow--prev">
           <UIcon name="material-symbols:arrow-back-ios" size="20" />

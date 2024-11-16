@@ -3,9 +3,10 @@ import { Splide, SplideSlide, SplideTrack } from "@splidejs/vue-splide";
 import "@splidejs/vue-splide/css/skyblue";
 import { modalStore } from "~/store/modalStore";
 
-const splideOptions = computed(() => ({
-  rewind: true,
-}));
+const splideOptions = {};
+
+const splide = ref();
+
 const splideData = [
   {
     img: "/img/slider1.png",
@@ -32,10 +33,26 @@ const splideData = [
       "As long as you have energy, you will interact with the people around you and have conversations. Your choices during these interactions can earn or cost you Social Points (SP). Once you reach 100 SP, the game rewards you with 1 token.",
   },
 ];
-const splideOptionsRef = ref<object>(splideOptions);
+const currentIndex = ref(0);
+
+const onNext = () => {
+  if (currentIndex.value < splideData.length - 1) {
+    currentIndex.value++;
+    splide.value.go(currentIndex.value);
+  } else {
+    modalStore().setTutorialModal(false);
+  }
+};
+
+const onPrev = () => {
+  if (currentIndex.value > 0) {
+    currentIndex.value--;
+    splide.value.go(currentIndex.value);
+  }
+};
 </script>
 <template>
-  <Splide :has-track="false" :options="splideOptionsRef" ref="splide">
+  <Splide ref="splide" :has-track="false" :options="splideOptions">
     <SplideTrack>
       <SplideSlide v-for="item in splideData" :key="item.description">
         <div
@@ -64,14 +81,29 @@ const splideOptionsRef = ref<object>(splideOptions);
     </SplideTrack>
     <div class="splide__pagination" />
     <div class="splide__arrows">
-      <button class="splide__arrow splide__arrow--prev">
-        <UIcon name="material-symbols:arrow-back-ios" size="20" />
-        <span>BACK</span>
-      </button>
-      <button class="splide__arrow splide__arrow--next">
-        <span>NEXT</span>
-        <UIcon name="material-symbols:arrow-forward-ios" size="20" />
-      </button>
+      <div @click.stop.prevent="onPrev">
+        <button
+          :disabled="currentIndex === 0"
+          class="splide__arrow splide__arrow--prev"
+        >
+          <UIcon name="material-symbols:arrow-back-ios" size="20" />
+          <span>BACK</span>
+        </button>
+      </div>
+      <div @click.stop.prevent="onNext">
+        <button
+          v-if="currentIndex < splideData.length - 1"
+          class="splide__arrow splide__arrow--next"
+        >
+          <span>NEXT</span>
+
+          <UIcon name="material-symbols:arrow-forward-ios" size="20" />
+        </button>
+        <button v-else class="splide__arrow splide__arrow--next">
+          <span>START</span>
+          <UIcon name="material-symbols:arrow-forward-ios" size="20" />
+        </button>
+      </div>
     </div>
   </Splide>
   <button
