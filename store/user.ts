@@ -43,6 +43,8 @@ export interface User {
   otherCharacters: string[];
   storyLocation: string;
   firstLogin: boolean;
+  tasks: any[];
+  lastStoryResponse: any;
   // fx settings end
 }
 
@@ -93,6 +95,8 @@ export const userStore = defineStore("userStore", {
       otherCharacters: [],
       storyLocation: "",
       firstLogin: false,
+      tasks: [],
+      lastStoryResponse: {},
       // fx settings end
     };
   },
@@ -164,7 +168,12 @@ export const userStore = defineStore("userStore", {
         });
 
         if (!response.ok) {
-          console.error(`HTTP error! status: ${response.status}`);
+          const { error } = await response.json();
+
+          if (error.includes("Missing required") || error.includes("OpenAI")) {
+            // return old
+            return null;
+          }
           return { brief: "You should rest or help your friends." };
         }
 
@@ -173,8 +182,17 @@ export const userStore = defineStore("userStore", {
         this.otherCharacters = result.response.usedCharacters;
         this.location = result.response.usedLocation;
         console.log("Continue Story response:", result);
+        this.lastStoryResponse = result.response;
         return result.response;
       } catch (error) {
+        if (
+          error instanceof Error &&
+          (error.message.includes("Missing required") ||
+            error.message.includes("OpenAI"))
+        ) {
+          // return old
+          return null;
+        }
         console.error("Continue Story failed:", error);
         return { brief: "You should rest or help your friends." };
       }
@@ -534,6 +552,51 @@ export const userStore = defineStore("userStore", {
         return result;
       } catch (error) {
         console.error("Set character failed:", error);
+        return false;
+      }
+    },
+    async getTasks() {
+      try {
+        const response = await cFetch(`/backend/task/list`, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        this.tasks = result;
+        return result;
+      } catch (error) {
+        console.error("Get tasks failed:", error);
+        return false;
+      }
+    },
+    async completeTask(taskId: string) {
+      try {
+        const response = await cFetch(`/backend/task/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            taskId,
+          }),
+        });
+
+        if (!response.ok) {
+          console.error(`HTTP error! status: ${response.status}`);
+          return false;
+        }
+
+        const { result, user } = await response.json();
+        this.assignUserData(user);
+        console.log("Complete task response:", result);
+        this.tasks = this.tasks.filter((task) => task.id !== taskId);
+        return result;
+      } catch (error) {
+        console.error("Complete task failed:", error);
         return false;
       }
     },

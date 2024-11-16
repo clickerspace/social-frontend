@@ -10,18 +10,14 @@ export default defineNuxtConfig({
       script: [
         ...(process.env.NUXT_PUBLIC_MODE !== "dev"
           ? [
-              //   {
-              //     src: "https://sad.adsgram.ai/js/sad.min.js",
-              //     type: "text/javascript",
-              //   },
-              //   {
-              //     src: "https://tganalytics.xyz/index.js",
-              //     type: "text/javascript",
-              //   },
-              //   {
-              //     src: `https://static.sonartech.io/lib/1.0.0/sonar.js?appId=${process.env.SONAR_APP_ID}`,
-              //     type: "text/javascript",
-              //   },
+              {
+                src: "https://sad.adsgram.ai/js/sad.min.js",
+                type: "text/javascript",
+              },
+              {
+                src: `https://static.sonartech.io/lib/1.0.0/sonar.js?appId=${process.env.SONAR_APP_ID}`,
+                type: "text/javascript",
+              },
             ]
           : []),
       ],

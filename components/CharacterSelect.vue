@@ -65,10 +65,10 @@ const selectCharacter = (key: string) => {
         </div>
       </div>
       <div class="splide__arrows">
-        <button class="splide__arrow splide__arrow--prev">
+        <button class="splide__arrow splide__arrow--prev" @click="onPrev">
           <UIcon name="material-symbols:arrow-back-ios" size="20" />
         </button>
-        <button class="splide__arrow splide__arrow--next">
+        <button class="splide__arrow splide__arrow--next" @click="onNext">
           <UIcon name="material-symbols:arrow-forward-ios" size="20" />
         </button>
       </div>

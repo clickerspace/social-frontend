@@ -8,7 +8,8 @@ import type { LocationKey } from "~/utils/helpers/gameBgImgs";
 import getKeyAndGiveRandomRelatedCharacterImg, {
   type CharacterKeys,
 } from "~/utils/helpers/characterImgs";
-const { story, location, gameLoading, showTutorial } = storeToRefs(userStore());
+const { story, location, gameLoading, showTutorial, energy } =
+  storeToRefs(userStore());
 const { tutorialModal } = storeToRefs(modalStore());
 const emit = defineEmits(["mounted"]);
 onMounted(() => {
@@ -63,11 +64,16 @@ const CHAR_COUNT = 200;
 const loadingStory = ref(false);
 const applySelectionAndContinueStory = async (selection: string) => {
   loadingStory.value = true;
-  story.value = await userStore().continueStory(
+  const result = await userStore().continueStory(
     story.value.brief,
     story.value.next,
     selection,
   );
+  if (!result) {
+    loadingStory.value = false;
+    return;
+  }
+  story.value = result;
 
   storySplitted.value = splitTextIntoMaxCharsArray(
     story.value.brief,
@@ -122,6 +128,27 @@ onMounted(async () => {
 });
 const activeIndex = ref(0);
 const isOpen = ref(false);
+
+watch(
+  () => energy.value,
+  async (newx, oldx) => {
+    console.log(newx, oldx);
+    if (oldx === 0 && newx > 0) {
+      await userStore().getStory();
+      storySplitted.value = splitTextIntoMaxCharsArray(
+        story.value.brief,
+        CHAR_COUNT,
+      );
+      storySplitted.value = [
+        ...storySplitted.value,
+        ...splitTextIntoMaxCharsArray(story.value?.next || "", CHAR_COUNT),
+      ];
+
+      showOptions.value = false;
+      activeIndex.value = 0;
+    }
+  },
+);
 </script>
 <template>
   <div
