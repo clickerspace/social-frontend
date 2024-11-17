@@ -236,6 +236,8 @@ export const userStore = defineStore("userStore", {
               buttonText: "ADD",
             },
           ];
+        } else {
+          this.searchedContact = [];
         }
         this.assignUserData(user);
         return result;
@@ -286,7 +288,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
-        await this.getFriends();
+        this.contacts = this.contacts.filter((contact) => contact.id !== tgId);
         return result;
       } catch (error) {
         console.error("Remove friend failed:", error);
@@ -358,7 +360,12 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
-        await this.getFriends();
+        this.contacts = this.contacts.map((contact) => {
+          if (contact.id === tgId) {
+            contact.buttonText = "";
+          }
+          return contact;
+        });
         return result;
       } catch (error) {
         console.error("Help friend failed:", error);
@@ -382,7 +389,7 @@ export const userStore = defineStore("userStore", {
 
         const { result, user } = await response.json();
         this.assignUserData(user);
-        await this.getHelpRequests();
+        this.helpList = this.helpList.filter((contact) => contact.id !== tgId);
         return result;
       } catch (error) {
         console.error("Send help failed:", error);
