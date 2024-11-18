@@ -2,7 +2,9 @@
 import { userStore } from "~/store/user";
 import { initUtils } from "@telegram-apps/sdk";
 import { cFetch } from "~/utils/helpers/cFetch";
+
 const { completeTask, getTasks } = userStore();
+const { walletAddress } = storeToRefs(userStore());
 const utils = initUtils();
 interface props {
   task: {
@@ -21,7 +23,40 @@ interface props {
   };
 }
 const props = defineProps<props>();
-
+const { checkConnection, tonconnect } = useTonConnect();
+const callSendCheckin = async () => {
+  const connected = await checkConnection();
+  if (!connected) return;
+  let transaction;
+  if (!tonconnect.value) {
+    console.error("TonConnectUI is not initialized");
+    return;
+  }
+  try {
+    const res = await cFetch("/backend/transactions/check-in", {
+      method: "POST",
+      body: JSON.stringify({ senderAddress: walletAddress.value }),
+    });
+    const data = await res.json();
+    transaction = data.result.contractTx;
+    if (!transaction) {
+      console.error("Transaction is not initialized");
+      return;
+    }
+    tonconnect.value
+      .sendTransaction(transaction)
+      .then((result: any) => {
+        getTasks();
+        // no need for quest call here listener on transaction will handle rest.
+        // give reward
+      })
+      .catch((error: any) => {
+        console.error("Error sending transaction:", error);
+      });
+  } catch (e) {
+    console.error("Error sending transaction:", e);
+  }
+};
 const { task } = toRefs(props);
 const toast = useToast();
 const onReward = async () => {
@@ -54,6 +89,9 @@ const handleClick = async () => {
     if (task.value.task.name.toLowerCase().includes("watch")) {
       await showAd();
       await getTasks();
+      return;
+    } else if (task.value.task.name.toLowerCase().includes("check-in")) {
+      await callSendCheckin();
       return;
     }
 
