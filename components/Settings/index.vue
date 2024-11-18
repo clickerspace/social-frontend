@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { modalStore } from "~/store/modalStore";
-const emit = defineEmits(["update:key"]);
+import { userStore } from "~/store/user";
+import { storeToRefs } from "pinia";
+import { fxHandler } from "~/composables/fxHandler";
 
+const emit = defineEmits(["update:key"]);
+const user = userStore();
+const { fxController } = fxHandler();
+
+const { soundFxOn, musicOn, soundFxLevel, musicLevel, vibration, connected } =
+  storeToRefs(user);
 const credistModal = ref(false);
 const startCredits = () => {
   credistModal.value = !credistModal.value;
@@ -19,8 +27,15 @@ const startCredits = () => {
     <button class="settings-button h-10" @click="startCredits()">
       Credits
     </button>
-    <button class="settings-button h-10">Watch Story</button></PhoneLayout
-  >
+    <button class="settings-button h-10">Watch Story</button>
+    <SettingsToggleSlider
+      title="music"
+      v-model:toggle="musicOn"
+      v-model:slider="musicLevel"
+      :toggleFunction="(v) => fxController?.toggleEffects(v)"
+      :sliderFunction="(v) => fxController?.setEffectsLevel(v)"
+    />
+  </PhoneLayout>
 </template>
 <style>
 .settings-button {
