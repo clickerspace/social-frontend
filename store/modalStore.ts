@@ -6,7 +6,6 @@ interface ModalState {
   tutorialModal: boolean;
   splashModal: boolean;
   characterSelectModal: boolean;
-  paymentModal: boolean;
 }
 export const modalStore = defineStore("modalStore", {
   state: (): ModalState => {
@@ -14,7 +13,6 @@ export const modalStore = defineStore("modalStore", {
       isModalOpen: false,
       activeKey: "menu",
       tutorialModal: false,
-      paymentModal: false,
       splashModal: false,
       characterSelectModal: false,
     };
@@ -34,9 +32,7 @@ export const modalStore = defineStore("modalStore", {
     setTutorialModal(value: boolean) {
       this.tutorialModal = value;
     },
-    setPaymentModal(value: boolean) {
-      this.paymentModal = value;
-    },
+
     setSplashModal(value: boolean) {
       this.splashModal = value;
     },
