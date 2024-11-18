@@ -28,8 +28,7 @@ const startCredits = () => {
       Credits
     </button>
     <button class="settings-button h-10">Watch Story</button>
-    {{ musicOn }}
-    {{ musicLevel }}
+
     <SettingsToggleSlider
       title="music"
       v-model:toggle="musicOn"
