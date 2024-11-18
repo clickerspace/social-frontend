@@ -13,7 +13,7 @@ const handleClick = (activeKey: string) => {
     v-model="isOpen"
     :ui="{
       background: '!bg-opacity-0',
-      inner: 'hide-scrollbar',
+      inner: 'hide-scrollbar overflow-x-hidden w-max-screen select-none',
       base: 'flex items-center justify-center px-10',
 
       transition: {

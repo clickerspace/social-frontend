@@ -4,11 +4,15 @@ export default defineAppConfig({
     gray: "voodoo", // change to match your design
     notifications: {
       position: "top-4 right-0 bottom-auto left-auto",
-      container: "space-y-3 px-4 py-0 sm:py-0  overflow-y-auto hide-scrollbar",
+      container:
+        "space-y-3 px-4 py-0 sm:py-0  overflow-y-auto hide-scrollbar overflow-x-hidden",
     },
 
     card: {
       base: "select-none",
+    },
+    modal: {
+      inner: "hide-scrollbar overflow-x-hidden w-max-screen select-none",
     },
     notification: {
       background: "bg-primary-700 dark:bg-primary-700",
