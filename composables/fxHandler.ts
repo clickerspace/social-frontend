@@ -2,7 +2,7 @@ import { onMounted, onBeforeUnmount } from "vue";
 import { userStore } from "../store/user";
 import { storeToRefs } from "pinia";
 import { FxController } from "../utils/helpers/fxController";
-import themeSong from "~/assets/sounds/theme.mp3";
+import themeSong from "~/assets/sounds/v3.mp3";
 
 let fxController: FxController | null = null;
 let isInitialized = false;
