@@ -96,7 +96,7 @@ const getOnScroll = async () => {
                 : userStore().askForHelp(item.id)
             "
           />
-          <!-- TODO ADD A SEPERATOR BETWEEN SEARCHED AND CONTACTS -->
+          <UDivider v-if="searchedContact.length" />
           <ContactsCard
             v-for="item in contacts"
             :item="item"

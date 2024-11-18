@@ -227,11 +227,11 @@ export const userStore = defineStore("userStore", {
         }
 
         const { result, user } = await response.json();
-        if (result.username) {
+        if (result.friendUser.username) {
           this.searchedContact = [
             {
-              id: result.id,
-              name: result.username,
+              id: result.friendUser.id,
+              name: result.friendUser.username,
               avatar: "/avatar/avatar2.png",
               buttonText: "ADD",
             },
