@@ -236,6 +236,15 @@ export const userStore = defineStore("userStore", {
               buttonText: "ADD",
             },
           ];
+        } else if (result.friendUser) {
+          this.searchedContact = [
+            {
+              id: result.friendUser.id,
+              name: result.friendUser.username,
+              avatar: `/avatar/${result.friendUser.selectedCharacter}.png`,
+              buttonText: "",
+            },
+          ];
         } else {
           this.searchedContact = [];
         }
