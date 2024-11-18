@@ -24,7 +24,6 @@ const splideData = splideCharacterData;
 
 const selectCharacter = (key: string) => {
   // save to user data and store
-  console.log("object :>> ", key);
   userStore().setSelectedCharacter(key);
   modalStore().setTutorialModal(true);
   modalStore().setCharacterSelectModal(false);

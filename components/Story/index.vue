@@ -202,7 +202,7 @@ watch(
       >
         <UIcon
           class="flex-shrink-0"
-          name="material-symbols:arrow-back-ios "
+          name="material-symbols:arrow-back-ios"
           size="20"
         />
         BACK

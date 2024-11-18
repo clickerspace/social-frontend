@@ -2,7 +2,7 @@
 import { TabMenuItems } from "~/utils/constants/tabMenu";
 import { PhoneMenuItems } from "~/utils/constants/phoneMainMenu";
 
-const emit = defineEmits(["activeIndex", "update:isOpen"]);
+const emit = defineEmits(["activeComp", "update:isOpen"]);
 </script>
 <template>
   <div
@@ -13,11 +13,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
         v-for="(item, i) in PhoneMenuItems"
         :key="item.label"
         :to="item.to"
-        @click="
-          !item.to
-            ? emit('activeIndex', { component: item.component, index: i })
-            : ''
-        "
+        @click="!item.to ? emit('activeComp', item.component) : ''"
         class="flex cursor-pointer flex-col items-center duration-300 hover:scale-110"
       >
         <img
@@ -40,7 +36,7 @@ const emit = defineEmits(["activeIndex", "update:isOpen"]);
           v-for="(item, i) in TabMenuItems"
           v-show="item.label !== 'menu'"
           :key="item.label"
-          @click="emit('activeIndex', { component: item.component, index: i })"
+          @click="emit('activeComp', item.component)"
           class="cursor-pointer duration-300 hover:scale-125"
         >
           <img :src="item.icon" :alt="item.label" class="size-[55px]" />
