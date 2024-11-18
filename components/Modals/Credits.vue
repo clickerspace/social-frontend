@@ -45,6 +45,9 @@ const isOpen = defineModel("isOpen", { type: Boolean });
           <ul class="list-none space-y-1">
             <li>Furkan AVCI</li>
           </ul>
+          <ul class="list-none space-y-1">
+            <li>Gokhan Caliskan</li>
+          </ul>
         </div>
         <div>
           <h2 class="text-2xl font-semibold">Backend Developers</h2>
