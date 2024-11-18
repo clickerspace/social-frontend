@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { userStore } from "~/store/user";
+import { modalStore } from "~/store/modalStore";
 import { storeToRefs } from "#build/imports";
 import { initUtils } from "@telegram-apps/sdk";
 const emit = defineEmits(["update:key"]);
 const { products: marketItems } = storeToRefs(userStore());
 const utils = initUtils();
 const clicked = ref(false);
+const iframeUrl = ref("");
 const handleClick = async (productId: string) => {
   if (!clicked.value) {
     clicked.value = true;
@@ -27,10 +29,12 @@ const handleClick = async (productId: string) => {
   }
   const data = await resultAeon.json();
   if (data.msg === "success") {
-    utils.openLink(data.model.webUrl, {
-      tryInstantView: true,
-      tryBrowser: true,
-    });
+    // utils.openLink(data.model.webUrl, {
+    //   tryInstantView: true,
+    //   tryBrowser: true,
+    // });
+    iframeUrl.value = data.model.webUrl;
+    modalStore().setPaymentModal(true);
   }
 
   setTimeout(() => {
@@ -43,6 +47,7 @@ onMounted(async () => {
 </script>
 <template>
   <PhoneLayout title="Market" @update:key="emit('update:key')">
+    <ModalsPaymentModal :url="iframeUrl" />
     <div
       class="flex w-full cursor-pointer select-none items-center justify-between px-2 py-3"
       :class="clicked ? 'radial-bg-disabled' : 'radial-bg'"
