@@ -88,7 +88,7 @@ const onError = () => {
 const { showAd } = useAdsgram({ onError, onReward });
 const handleClick = async () => {
   console.log(task.value);
-  if (task.value.status === "ACTIVE") {
+  if (task.value.status === "ACTIVE" || task.value.status === "PENDING") {
     if (task.value.task.name.toLowerCase().includes("watch")) {
       await showAd();
       await getTasks();
