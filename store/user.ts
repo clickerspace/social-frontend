@@ -227,12 +227,12 @@ export const userStore = defineStore("userStore", {
         }
 
         const { result, user } = await response.json();
-        if (result.friendUser.username) {
+        if (result.username) {
           this.searchedContact = [
             {
-              id: result.friendUser.id,
-              name: result.friendUser.username,
-              avatar: "/avatar/avatar2.png",
+              id: result.id,
+              name: result.username,
+              avatar: `/avatar/${result.selectedCharacter}.png`,
               buttonText: "ADD",
             },
           ];
@@ -412,15 +412,24 @@ export const userStore = defineStore("userStore", {
         }
 
         const { result, user } = await response.json();
+        console.log("object :>> ", result);
+
         this.assignUserData(user);
         const mappedResults = result.map(
-          (item: { initiator: { username: string; id: string } }) => ({
+          (item: {
+            initiator: {
+              username: string;
+              id: string;
+              selectedCharacter: string;
+            };
+          }) => ({
             name: item.initiator.username,
-            avatar: "/avatar/avatar2.png",
+            avatar: `/avatar/${item.initiator.selectedCharacter}.png`,
             buttonText: "ADD",
             id: item.initiator.id,
           }),
         );
+
         if (mappedResults.length !== 0) {
           this.friendshipRequests = [
             ...this.friendshipRequests,
@@ -455,9 +464,10 @@ export const userStore = defineStore("userStore", {
             username: string;
             id: string;
             hasEnergyRequest: boolean;
+            selectedCharacter: string;
           }) => ({
             name: item.username,
-            avatar: "/avatar/avatar2.png",
+            avatar: `/avatar/${item.selectedCharacter}.png`,
             buttonText: !item.hasEnergyRequest ? "ASK HELP" : "",
             id: item.id,
           }),
@@ -490,9 +500,12 @@ export const userStore = defineStore("userStore", {
         const { result, user } = await response.json();
         this.assignUserData(user);
         const mappedResults = result.map(
-          (item: { helped: { username: string; id: string } }) => ({
+          (item: {
+            helped: { username: string; id: string; selectedCharacter: string };
+          }) => ({
             name: item.helped.username,
-            avatar: "/avatar/avatar2.png",
+            avatar: `/avatar/${item.helped.selectedCharacter}.png`,
+
             buttonText: "SEND HELP",
             id: item.helped.id,
           }),
