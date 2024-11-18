@@ -10,7 +10,7 @@ const isOpen = defineModel("isOpen", { type: Boolean });
       width: 'w-full',
       background: '!bg-transparent',
       shadow: '!shadow-none',
-      inner: 'hide-scrollbar',
+      inner: 'hide-scrollbar overflow-x-hidden w-max-screen select-none',
     }"
     fullscreen
   >

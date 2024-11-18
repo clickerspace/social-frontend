@@ -99,7 +99,7 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
     @close="closeModal"
     :ui="{
       background: '!bg-opacity-0',
-      inner: 'hide-scrollbar',
+      inner: 'hide-scrollbar overflow-x-hidden w-max-screen select-none',
 
       transition: {
         enter: 'ease-out duration-500',

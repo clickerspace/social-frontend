@@ -7,7 +7,7 @@ const { tutorialModal } = storeToRefs(modalStore());
     v-model="tutorialModal"
     :ui="{
       background: '!bg-opacity-0',
-      inner: 'hide-scrollbar',
+      inner: 'hide-scrollbar overflow-x-hidden w-max-screen select-none',
       base: 'flex items-center justify-center',
 
       transition: {
