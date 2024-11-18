@@ -421,7 +421,6 @@ export const userStore = defineStore("userStore", {
         }
 
         const { result, user } = await response.json();
-        console.log("object :>> ", result);
 
         this.assignUserData(user);
         const mappedResults = result.map(

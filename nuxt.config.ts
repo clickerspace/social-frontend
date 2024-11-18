@@ -83,6 +83,7 @@ export default defineNuxtConfig({
         "mdi:information",
         "maki:watermill-11",
         "ri:water-flash-fill",
+        "hugeicons:social-points",
       ],
       sizeLimitKb: 256,
     },

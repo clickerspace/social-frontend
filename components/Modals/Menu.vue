@@ -78,11 +78,9 @@ onUnmounted(() => {
 });
 
 // const activeKey = ref<keyof ComponentMap>("menu");
-const activeIndex = ref<number>(0);
-const activeCompIndex = (key: keyof ComponentMap, i: number) => {
+const activeComp = (key: keyof ComponentMap) => {
   modalStore().changeActiveKey(key);
   // activeKey.value = key;
-  activeIndex.value = i;
 };
 const isOpen = defineModel<boolean>("isOpen");
 const closeModal = () => {
@@ -148,20 +146,22 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
         "
       >
         <Transition>
-          <component
-            :is="comps[activeKey as keyof ComponentMap]"
-            @update:is-open="() => closeModal()"
-            @update:key="
-              () => {
-                modalStore().changeActiveKey('menu');
-              }
-            "
-            @active-index="
-              (e: any) => {
-                activeCompIndex(e.component, e.i);
-              }
-            "
-          />
+          <div class="relative h-full w-full">
+            <component
+              :is="comps[activeKey as keyof ComponentMap]"
+              @update:is-open="() => closeModal()"
+              @update:key="
+                () => {
+                  modalStore().changeActiveKey('menu');
+                }
+              "
+              @active-comp="
+                (e: any) => {
+                  activeComp(e);
+                }
+              "
+            />
+          </div>
         </Transition>
       </div>
     </div>
