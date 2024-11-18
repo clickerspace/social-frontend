@@ -35,6 +35,9 @@ const callSendCheckin = async () => {
   try {
     const res = await cFetch("/backend/transactions/check-in", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ senderAddress: walletAddress.value }),
     });
     const data = await res.json();
