@@ -34,8 +34,8 @@ const startCredits = () => {
       title="music"
       v-model:toggle="musicOn"
       v-model:slider="musicLevel"
-      :toggleFunction="(v) => fxController?.toggleEffects(v)"
-      :sliderFunction="(v) => fxController?.setEffectsLevel(v)"
+      :toggleFunction="(v) => fxController?.toggleMusic(v)"
+      :sliderFunction="(v) => fxController?.setMusicLevel(v)"
     />
   </PhoneLayout>
 </template>
