@@ -1,5 +1,5 @@
 {
-  "iconUrl": "https://game.clicker.farm/icons/loading-logo.png",
+  "iconUrl": "https://social-frontend.nuxt.dev/icons/clicker.svg",
   "name": "Social Clicker",
-  "url": "https://social.clicker.games/"
+  "url": "https://social-frontend.nuxt.dev/"
 }
