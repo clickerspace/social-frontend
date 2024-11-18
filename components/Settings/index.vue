@@ -4,7 +4,7 @@ import { userStore } from "~/store/user";
 import { storeToRefs } from "pinia";
 import { fxHandler } from "~/composables/fxHandler";
 
-const emit = defineEmits(["update:key"]);
+const emit = defineEmits(["update:key", "activeComp"]);
 const user = userStore();
 const { fxController } = fxHandler();
 
