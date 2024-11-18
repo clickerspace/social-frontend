@@ -129,15 +129,7 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
       <div
         class="absolute left-1/2 top-0 z-50 h-[18px] w-[148px] translate-x-[-50%] rounded-b-[1rem] bg-black"
       ></div>
-      <div
-        class="absolute left-[-105px] top-[124px] z-50 h-[46px] w-[4px] rounded-l-lg bg-black"
-      ></div>
-      <div
-        class="absolute left-[-105px] top-[178px] z-50 h-[46px] w-[4px] rounded-l-lg bg-black"
-      ></div>
-      <div
-        class="absolute right-[-105px] top-[142px] z-50 h-[64px] w-[4px] rounded-r-lg bg-black"
-      ></div>
+
       <StatusBarPhone class="absolute left-0 top-0 z-20" />
       <div
         class="hide-scrollbar relative h-full w-full overflow-y-scroll rounded-t-[32px] bg-cover bg-center bg-no-repeat pt-6"
