@@ -137,36 +137,23 @@ const bg = ref('bg-[url("@/assets/img/modal-phone-bg.png")]');
           activeKey === 'menu' ? bg : 'bg-[#19043DCC]/80 backdrop-blur-[35px]'
         "
       >
-        <Transition>
-          <div class="relative h-full w-full">
-            <component
-              :is="comps[activeKey as keyof ComponentMap]"
-              @update:is-open="() => closeModal()"
-              @update:key="
-                () => {
-                  modalStore().changeActiveKey('menu');
-                }
-              "
-              @active-comp="
-                (e: any) => {
-                  activeComp(e);
-                }
-              "
-            />
-          </div>
-        </Transition>
+        <div class="relative h-full w-full">
+          <component
+            :is="comps[activeKey as keyof ComponentMap]"
+            @update:is-open="() => closeModal()"
+            @update:key="
+              () => {
+                modalStore().changeActiveKey('menu');
+              }
+            "
+            @active-comp="
+              (e: any) => {
+                activeComp(e);
+              }
+            "
+          />
+        </div>
       </div>
     </div>
   </UModal>
 </template>
-<style>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>
