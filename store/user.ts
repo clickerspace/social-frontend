@@ -702,4 +702,7 @@ export const userStore = defineStore("userStore", {
       this.vibration = value;
     },
   },
+  persist: {
+    storage: localStorage,
+  },
 });
