@@ -86,9 +86,11 @@ const onError = () => {
   });
 };
 const { showAd } = useAdsgram({ onError, onReward });
+const clicked = ref(false);
 const handleClick = async () => {
   console.log(task.value);
   if (task.value.status === "ACTIVE" || task.value.status === "PENDING") {
+    clicked.value = true;
     if (task.value.task.name.toLowerCase().includes("watch")) {
       await showAd();
       await getTasks();
@@ -108,18 +110,22 @@ const handleClick = async () => {
     await completeTask(task.value.task.id);
     await getTasks();
   }
+  setTimeout(() => {
+    clicked.value = false;
+  }, 500);
 };
 </script>
 <template>
   <div
     class="radial-bg flex w-full select-none items-center justify-between p-3"
-    :class="
+    :class="[
       task.status === 'PENDING'
         ? 'radial-bg'
         : task.status !== 'COMPLETED'
           ? '!border !border-black'
-          : 'radial-bg-disabled'
-    "
+          : 'radial-bg-disabled',
+      clicked ? 'opacity-50' : '',
+    ]"
     @click="handleClick"
   >
     <div class="flex items-center gap-2">
